@@ -1,35 +1,54 @@
-import React, { useContext } from 'react'
-import { AuthContext } from '../../context/AuthProvider'
+import React, { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 
 const AllTask = () => {
+  const [userData] = useContext(AuthContext);
 
-   const [userData,setUserData] =  useContext(AuthContext)
-
-   
   return (
-    <div className='bg-[#1c1c1c] p-5 rounded mt-5'>
-        <div className='bg-red-400 mb-2 py-2 px-4 flex justify-between rounded'>
-            <h2 className='text-lg font-medium w-1/5'>Employee Name</h2>
-            <h3 className='text-lg font-medium w-1/5'>New Task</h3>
-            <h5 className='text-lg font-medium w-1/5'>Active Task</h5>
-            <h5 className='text-lg font-medium w-1/5'>Completed</h5>
-            <h5 className='text-lg font-medium w-1/5'>Failed</h5>
-        </div>
-        <div className=''>
-        {userData.map(function(elem,idx){
-            return <div key={idx} className='border-2 border-emerald-500 mb-2 py-2 px-4 flex justify-between rounded'>
-            <h2 className='text-lg font-medium  w-1/5'>{elem.firstName}</h2>
-            <h3 className='text-lg font-medium w-1/5 text-blue-400'>{elem.taskCounts.newTask}</h3>
-            <h5 className='text-lg font-medium w-1/5 text-yellow-400'>{elem.taskCounts.active}</h5>
-            <h5 className='text-lg font-medium w-1/5 text-white'>{elem.taskCounts.completed}</h5>
-            <h5 className='text-lg font-medium w-1/5 text-red-600'>{elem.taskCounts.failed}</h5>
-        </div>
-        })}
-        </div>
-        
-        
-    </div>
-  )
-}
+    <div className="p-6 rounded-lg mt-6 shadow-lg border-2 border-gray-300">
+      {/* Table Header */}
+      <h2 className="text-xl font-bold text-gray-800 mb-6">Assigned Tasks</h2>
+      <div className="grid grid-cols-5 gap-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-sm py-3 px-4 rounded-lg mb-4">
+        <h2 className="text-center">Employee Name</h2>
+        <h3 className="text-center">New</h3>
+        <h3 className="text-center">Active</h3>
+        <h3 className="text-center">Completed</h3>
+        <h3 className="text-center">Failed</h3>
+      </div>
 
-export default AllTask
+      {/* Task Counts Per Employee */}
+      <div className="space-y-3">
+        {userData?.length > 0 ? (
+          userData.map((user, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-5 gap-4 items-center text-sm text-gray-100 bg-gray-800 hover:bg-gray-700 transition-all px-4 py-3 rounded-lg border border-gray-700"
+            >
+              <h2 className="text-center font-medium text-white">
+                {user.firstName}
+              </h2>
+              <h3 className="text-center text-blue-400 font-semibold">
+                {user.taskCounts.newTask}
+              </h3>
+              <h3 className="text-center text-yellow-400 font-semibold">
+                {user.taskCounts.active}
+              </h3>
+              <h3 className="text-center text-green-400 font-semibold">
+                {user.taskCounts.completed}
+              </h3>
+              <h3 className="text-center text-red-500 font-semibold">
+                {user.taskCounts.failed}
+              </h3>
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-400 py-4">
+            No task data found for employees.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AllTask;

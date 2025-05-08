@@ -2,17 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  color: #fff;
-}
-body{
-  background-color: #111;
-}
+
+
 #tasklist::-webkit-scrollbar{
     background-color: transparent;
     height: 5px;
 }
+
 #tasklist::-webkit-scrollbar-thumb{
   background-color: rgb(143, 143, 143);
   border-radius: 50px;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  color: gray; /* Tailwind's text-gray-400 */
+  font-size: 14px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(60%) brightness(90%);
+  cursor: pointer;
+}
+
+.ql-container {
+  border: none !important;
+}
+
+.ql-toolbar {
+  border: none !important;
 }

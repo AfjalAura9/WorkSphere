@@ -1,23 +1,26 @@
-import React from 'react'
+import React from 'react';
 
-const AcceptTask = ({data}) => {
-    console.log();
+const AcceptTask = ({ data }) => {
   return (
-    <div className='flex-shrink-0 h-full w-[300px] p-5 bg-red-400 rounded-xl'>
-            <div className='flex justify-between items-center'>
-                <h3 className='bg-red-600 text-sm px-3 py-1 rounded'>{data.category}</h3>
-                <h4 className='text-sm'>{data.taskDate}</h4>
-            </div>
-            <h2 className='mt-5 text-2xl font-semibold'>{data.taskTitle}</h2>
-            <p className='text-sm mt-2'>
-                {data.taskDescription}
-            </p>
-            <div className='flex justify-between mt-6 '>
-                <button className='bg-green-500 rounded font-medium py-1 px-2 text-xs'>Mark as Completed</button>
-                <button className='bg-red-500 rounded font-medium py-1 px-2 text-xs'>Mark as Failed</button>
-            </div>
-        </div>
-  )
-}
+    <div className="min-w-[300px] bg-yellow-100 p-6 rounded-lg shadow-lg transition transform hover:scale-105">
+      <div className="flex justify-between items-center mb-4">
+        <span className="bg-yellow-300 text-yellow-900 px-4 py-1 rounded-full text-sm font-medium">
+          {data.category}
+        </span>
+        <span className="text-sm text-gray-600">{data.taskDate}</span>
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-2">{data.taskTitle}</h3>
+      <p className="text-sm text-gray-700 mb-4">{data.taskDescription}</p>
+      <div className="flex justify-between gap-4">
+        <button className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg text-sm w-full transition ease-in-out duration-200">
+          Mark as Completed
+        </button>
+        <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm w-full transition ease-in-out duration-200">
+          Mark as Failed
+        </button>
+      </div>
+    </div>
+  );
+};
 
-export default AcceptTask
+export default AcceptTask;
