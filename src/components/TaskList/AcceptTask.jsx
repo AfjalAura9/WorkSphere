@@ -16,7 +16,7 @@ const AcceptTask = ({ data }) => {
           Mark as Completed
         </button>
         <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm w-full transition ease-in-out duration-200">
-          Mark as Failed
+          Mark as 
         </button>
       </div>
     </div>

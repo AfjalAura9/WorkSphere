@@ -1,6 +1,4 @@
 import React, { useContext, useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { AuthContext } from "../../context/AuthProvider";
 
 const CreateTask = () => {
@@ -10,18 +8,14 @@ const CreateTask = () => {
   const [taskDate, setTaskDate] = useState("");
   const [assignTo, setAssignTo] = useState("");
   const [category, setCategory] = useState("");
-
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: "<p>Enter task description here...</p>",
-  });
+  const [taskDescription, setTaskDescription] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
 
     const newTask = {
       taskTitle,
-      taskDescription: editor.getHTML(),
+      taskDescription,
       taskDate,
       category,
       active: false,
@@ -48,7 +42,7 @@ const CreateTask = () => {
     setCategory("");
     setAssignTo("");
     setTaskDate("");
-    editor.commands.setContent("<p>Enter task description here...</p>");
+    setTaskDescription("");
   };
 
   return (
@@ -84,10 +78,16 @@ const CreateTask = () => {
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col">
-          <label className="block text-gray-800 font-medium mb-1 text-sm">Description</label>
-          <div className="rounded-lg border border-gray-300 h-[210px] overflow-auto mb-6 p-2 bg-white">
-            <EditorContent editor={editor} />
-          </div>
+          <label className="block text-gray-800 font-medium mb-1 text-sm">
+            Description
+          </label>
+          <textarea
+            value={taskDescription}
+            onChange={(e) => setTaskDescription(e.target.value)}
+            rows={10}
+            className="rounded-lg border border-gray-800 h-[210px] focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-auto mb-6 p-2 bg-white"
+            placeholder="Enter task description here..."
+          />
           <button
             type="submit"
             className="mt-3 bg-blue-500 text-white font-medium py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300 w-full"
@@ -100,10 +100,12 @@ const CreateTask = () => {
   );
 };
 
-// Input and Select components (same as before)
+// Input and Select components
 const Input = ({ label, ...props }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-800 mb-1">{label}</label>
+    <label className="block text-sm font-medium text-gray-800 mb-1">
+      {label}
+    </label>
     <input
       required
       className="w-full px-4 py-3 text-sm rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -114,16 +116,22 @@ const Input = ({ label, ...props }) => (
 
 const Select = ({ label, value, onChange, options }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-800 mb-1">{label}</label>
+    <label className="block text-sm font-medium text-gray-800 mb-1">
+      {label}
+    </label>
     <select
       required
       value={value}
       onChange={onChange}
       className="w-full px-4 py-3 text-sm rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
-      <option value="" disabled>Select {label}</option>
+      <option value="" disabled>
+        Select {label}
+      </option>
       {options.map((option, idx) => (
-        <option key={idx} value={option}>{option}</option>
+        <option key={idx} value={option}>
+          {option}
+        </option>
       ))}
     </select>
   </div>
