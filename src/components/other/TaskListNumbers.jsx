@@ -1,30 +1,34 @@
 import React from "react";
 
-const TaskListNumbers = ({ data }) => {
+const TaskListNumbers = ({ taskCounts, selectedFilter, setSelectedFilter }) => {
   const cards = [
     {
       label: "New Tasks",
-      count: data.taskCounts.newTask,
+      count: taskCounts.newTask,
       bg: "bg-blue-500",
       icon: "🆕",
+      filterKey: "New Tasks",
     },
     {
       label: "Completed",
-      count: data.taskCounts.completed,
+      count: taskCounts.completed,
       bg: "bg-green-500",
       icon: "✅",
+      filterKey: "Completed",
     },
     {
       label: "Accepted",
-      count: data.taskCounts.active,
+      count: taskCounts.active,
       bg: "bg-yellow-500",
       icon: "📥",
+      filterKey: "Accepted",
     },
     {
       label: "Failed",
-      count: data.taskCounts.failed,
+      count: taskCounts.failed,
       bg: "bg-red-500",
       icon: "❌",
+      filterKey: "Failed",
     },
   ];
 
@@ -33,7 +37,12 @@ const TaskListNumbers = ({ data }) => {
       {cards.map((card, idx) => (
         <div
           key={idx}
-          className={`p-6 rounded-lg shadow-lg text-white ${card.bg} flex items-center justify-between`}
+          onClick={() => setSelectedFilter(card.filterKey)}
+          className={`transition transform hover:scale-105 p-6 rounded-lg shadow-lg text-white ${card.bg} flex items-center justify-between cursor-pointer ${
+            selectedFilter === card.filterKey
+              ? "ring-4 ring-offset-2 ring-white"
+              : ""
+          }`}
         >
           <div>
             <h2 className="text-3xl font-semibold">{card.count}</h2>

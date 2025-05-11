@@ -17,7 +17,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
   return (
     <div
       className={`bg-gray-900 text-white h-screen transition-all duration-300 ${
-        isOpen ? "w-64" : "w-34"
+        isOpen ? "w-60" : "w-34"
       }`}
     >
       {/* Toggle Button */}

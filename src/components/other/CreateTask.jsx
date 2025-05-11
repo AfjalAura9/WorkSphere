@@ -22,7 +22,9 @@ const CreateTask = () => {
       newTask: true,
       failed: false,
       completed: false,
+      assignedTo: assignTo,
     };
+    
 
     const updatedUserData = userData.map((user) =>
       user.firstName === assignTo
@@ -48,7 +50,10 @@ const CreateTask = () => {
   return (
     <div className="bg-white p-8 rounded-lg mt-6 shadow-lg border-2 border-gray-300">
       <h2 className="text-xl font-bold text-gray-800 mb-6">Assign New Task</h2>
-      <form onSubmit={submitHandler} className="flex flex-col md:flex-row gap-8">
+      <form
+        onSubmit={submitHandler}
+        className="flex flex-col md:flex-row gap-8"
+      >
         <div className="w-full md:w-1/2 space-y-4">
           <Input
             label="Task Title"
