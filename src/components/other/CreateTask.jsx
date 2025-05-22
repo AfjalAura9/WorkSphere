@@ -1,145 +1,158 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import axios from "axios";
+
+const CATEGORY_OPTIONS = [
+  "Design",
+  "Development",
+  "Meeting",
+  "Testing",
+  "Documentation",
+  "Research",
+  "Other",
+];
 
 const CreateTask = () => {
-  const [userData, setUserData] = useContext(AuthContext);
+  const [userData] = useContext(AuthContext);
+  const [formState, setFormState] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+    category: "",
+    assignedTo: "",
+  });
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const [taskTitle, setTaskTitle] = useState("");
-  const [taskDate, setTaskDate] = useState("");
-  const [assignTo, setAssignTo] = useState("");
-  const [category, setCategory] = useState("");
-  const [taskDescription, setTaskDescription] = useState("");
+  const handleChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+    setErrorMsg("");
+    setSuccessMsg("");
+  };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-
-    const newTask = {
-      taskTitle,
-      taskDescription,
-      taskDate,
-      category,
-      active: false,
-      newTask: true,
-      failed: false,
-      completed: false,
-      assignedTo: assignTo,
-    };
-    
-
-    const updatedUserData = userData.map((user) =>
-      user.firstName === assignTo
-        ? {
-            ...user,
-            tasks: [...user.tasks, newTask],
-            taskCounts: {
-              ...user.taskCounts,
-              newTask: user.taskCounts.newTask + 1,
-            },
-          }
-        : user
-    );
-
-    setUserData(updatedUserData);
-    setTaskTitle("");
-    setCategory("");
-    setAssignTo("");
-    setTaskDate("");
-    setTaskDescription("");
+    try {
+      await axios.post("/api/tasks/assign", formState);
+      setSuccessMsg("Task assigned successfully!");
+      setFormState({
+        title: "",
+        description: "",
+        dueDate: "",
+        category: "",
+        assignedTo: "",
+      });
+    } catch (err) {
+      setErrorMsg("Failed to assign task. Please check all fields.");
+    }
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg mt-6 shadow-lg border-2 border-gray-300">
-      <h2 className="text-xl font-bold text-gray-800 mb-6">Assign New Task</h2>
-      <form
-        onSubmit={submitHandler}
-        className="flex flex-col md:flex-row gap-8"
-      >
-        <div className="w-full md:w-1/2 space-y-4">
-          <Input
-            label="Task Title"
-            value={taskTitle}
-            onChange={(e) => setTaskTitle(e.target.value)}
-            type="text"
-            placeholder="e.g., Design Login Page"
-          />
-          <Input
-            label="Date"
-            value={taskDate}
-            onChange={(e) => setTaskDate(e.target.value)}
-            type="date"
-          />
-          <Select
-            label="Assign To"
-            value={assignTo}
-            onChange={(e) => setAssignTo(e.target.value)}
-            options={userData.map((user) => user.firstName)}
-          />
-          <Select
-            label="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            options={["UI/UX", "Development", "Testing", "DevOps", "Security"]}
-          />
+    <div className="w-full min-h-[500px] mx-auto mt-10 mb-12 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 rounded-2xl shadow-sm p-8 flex flex-col">
+      <h2 className="text-3xl font-bold text-blue-700 mb-8 text-center">
+        Assign New Task
+      </h2>
+      <form onSubmit={submitHandler} className="flex flex-1 gap-8">
+        {/* Left Side: Fields */}
+        <div className="flex flex-col gap-6 w-full max-w-xs">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Title
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={formState.title}
+              onChange={handleChange}
+              placeholder="Task Title"
+              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Due Date
+            </label>
+            <input
+              type="date"
+              name="dueDate"
+              value={formState.dueDate}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Category
+            </label>
+            <select
+              name="category"
+              value={formState.category}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              required
+            >
+              <option value="">Select Category</option>
+              {CATEGORY_OPTIONS.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Assign To
+            </label>
+            <select
+              name="assignedTo"
+              value={formState.assignedTo}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              required
+            >
+              <option value="">Select Employee</option>
+              {userData.map((user) => (
+                <option key={user._id || user.id} value={user._id || user.id}>
+                  {user.firstName} {user.lastName} ({user.email})
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-
-        <div className="w-full md:w-1/2 flex flex-col">
-          <label className="block text-gray-800 font-medium mb-1 text-sm">
+        {/* Right Side: Description */}
+        <div className="flex-1 flex flex-col">
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
             Description
           </label>
           <textarea
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
-            rows={10}
-            className="rounded-lg border border-gray-800 h-[210px] focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-auto mb-6 p-2 bg-white"
-            placeholder="Enter task description here..."
+            name="description"
+            value={formState.description}
+            onChange={handleChange}
+            placeholder="Task Description"
+            className="w-full h-full min-h-[220px] px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition resize-none"
+            required
           />
-          <button
-            type="submit"
-            className="mt-3 bg-blue-500 text-white font-medium py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300 w-full"
-          >
-            Assign Task
-          </button>
+          <div className="flex-1" />
+          <div className="mt-6 flex flex-col gap-2">
+            {successMsg && (
+              <div className="text-green-600 font-semibold text-center">{successMsg}</div>
+            )}
+            {errorMsg && (
+              <div className="text-red-600 font-semibold text-center">{errorMsg}</div>
+            )}
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow transition duration-300 w-full"
+            >
+              Assign Task
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
 };
-
-// Input and Select components
-const Input = ({ label, ...props }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-800 mb-1">
-      {label}
-    </label>
-    <input
-      required
-      className="w-full px-4 py-3 text-sm rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      {...props}
-    />
-  </div>
-);
-
-const Select = ({ label, value, onChange, options }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-800 mb-1">
-      {label}
-    </label>
-    <select
-      required
-      value={value}
-      onChange={onChange}
-      className="w-full px-4 py-3 text-sm rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option value="" disabled>
-        Select {label}
-      </option>
-      {options.map((option, idx) => (
-        <option key={idx} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  </div>
-);
 
 export default CreateTask;

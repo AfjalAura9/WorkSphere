@@ -1,56 +1,123 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Header from "../other/Header";
 import TaskListNumbers from "../other/TaskListNumbers";
 import TaskList from "../TaskList/TaskList";
+import { NotificationContext } from "../../context/NotificationContext";
+import axios from "axios";
+import { io } from "socket.io-client";
 
-const EmployeeDashboard = ({ changeUser, data }) => {
-  const [selectedFilter, setSelectedFilter] = useState("All");
-  const [tasks, setTasks] = useState(data.tasks);
-  const [taskCounts, setTaskCounts] = useState(data.taskCounts);
+const SOCKET_URL = "http://localhost:5000";
 
-  const updateTaskStatus = (taskId, newStatus) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              newTask: newStatus === "newTask",
-              active: newStatus === "active",
-              completed: newStatus === "completed",
-              failed: newStatus === "failed",
-            }
-          : task
-      )
-    );
+const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
+  if (!data || !data._id) return null;
 
-    setTaskCounts((prevCounts) => {
-      const updatedCounts = { ...prevCounts };
+  const [tasks, setTasks] = useState([]);
+  const [taskCounts, setTaskCounts] = useState({
+    newTask: 0,
+    active: 0,
+    completed: 0,
+    failed: 0,
+  });
+  const [filter, setFilter] = useState("All");
+  const socketRef = useRef(null);
+  const { addNotification } = useContext(NotificationContext);
 
-      // Decrement count from previous status
-      const task = tasks.find((t) => t.id === taskId);
-      if (task.newTask) updatedCounts.newTask -= 1;
-      if (task.active) updatedCounts.active -= 1;
-      if (task.completed) updatedCounts.completed -= 1;
-      if (task.failed) updatedCounts.failed -= 1;
+  const loadEmployeeData = async () => {
+    try {
+      const response = await axios.get(`/api/employees/${data._id}`);
+      const employee = response.data;
+      setTasks(employee.tasks);
 
-      // Increment count for new status
-      updatedCounts[newStatus] += 1;
+      const counts = employee.tasks.reduce(
+        (acc, task) => {
+          acc[task.status] = (acc[task.status] || 0) + 1;
+          return acc;
+        },
+        { newTask: 0, active: 0, completed: 0, failed: 0 }
+      );
+      setTaskCounts(counts);
+    } catch (error) {
+      console.error("Failed to fetch employee data:", error);
+    }
+  };
 
-      return updatedCounts;
+  useEffect(() => {
+    loadEmployeeData();
+  }, [data._id, refreshTrigger]);
+
+  // --- Socket.IO: Listen for real-time updates ---
+  useEffect(() => {
+    socketRef.current = io(SOCKET_URL);
+
+    // Join a room for this employee
+    socketRef.current.emit("join", data._id);
+
+    // Listen for taskAssigned event
+    socketRef.current.on("taskAssigned", (payload) => {
+      if (payload.task.assignedTo === data._id) {
+        loadEmployeeData();
+        addNotification({
+          title: "New Task Assigned",
+          message: `Task "${payload.task.title}" has been assigned to you.`,
+          time: Date.now(),
+        });
+      }
     });
+
+    // Listen for taskEdited event
+    socketRef.current.on("taskEdited", () => {
+      loadEmployeeData();
+      addNotification({
+        title: "Task Updated",
+        message: "A task was updated by your admin.",
+        time: Date.now(),
+      });
+    });
+
+    // Listen for taskDeleted event
+    socketRef.current.on("taskDeleted", () => {
+      loadEmployeeData();
+      addNotification({
+        title: "Task Deleted",
+        message: "A task was deleted by your admin.",
+        time: Date.now(),
+      });
+    });
+
+    // Listen for taskReminder event
+    socketRef.current.on("taskReminder", (payload) => {
+      addNotification({
+        title: "Task Reminder",
+        message: payload.message,
+        time: Date.now(),
+      });
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, [data._id]);
+
+  const updateTaskStatus = async (taskId, status) => {
+    try {
+      await axios.put(`/api/tasks/${taskId}/status`, { status });
+      await loadEmployeeData();
+    } catch (err) {
+      console.error("Failed to update task status:", err);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 p-8">
       <Header changeUser={changeUser} data={data} />
       <TaskListNumbers
         taskCounts={taskCounts}
-        selectedFilter={selectedFilter}
-        setSelectedFilter={setSelectedFilter}
+        selectedFilter={filter}
+        setSelectedFilter={setFilter}
       />
       <TaskList
         tasks={tasks}
-        selectedFilter={selectedFilter}
+        selectedFilter={filter}
         updateTaskStatus={updateTaskStatus}
       />
     </div>

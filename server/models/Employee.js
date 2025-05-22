@@ -1,23 +1,19 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const employeeSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  position: {
-    type: String,
-    required: true,
-  },
-  department: String,
-  salary: {
-    type: Number,
-    required: true,
-  },
-  dateOfJoining: {
-    type: Date,
-    default: Date.now,
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }], // Reference to tasks
+  taskCounts: {
+    newTask: { type: Number, default: 0 },
+    active: { type: Number, default: 0 },
+    completed: { type: Number, default: 0 },
+    failed: { type: Number, default: 0 },
   },
 });
 
-module.exports = mongoose.model("Employee", employeeSchema);
+const Employee = mongoose.model("Employee", employeeSchema);
+
+export default Employee;

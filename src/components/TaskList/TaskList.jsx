@@ -5,47 +5,72 @@ import CompleteTask from "./CompleteTask";
 import FailedTask from "./FailedTask";
 
 const TaskList = ({ tasks, selectedFilter, updateTaskStatus }) => {
-  const filterTasks = (tasks) => {
-    switch (selectedFilter) {
-      case "New Tasks":
-        return tasks.filter((task) => task.newTask);
-      case "Completed":
-        return tasks.filter((task) => task.completed);
-      case "Accepted":
-        return tasks.filter((task) => task.active);
-      case "Failed":
-        return tasks.filter((task) => task.failed);
-      default:
-        return tasks;
-    }
+  // Map filter keys to status values
+  const statusMap = {
+    new: "NewTask",
+    active: "active",
+    completed: "completed",
+    failed: "failed",
+    "New Tasks": "newTask",
+    Accepted: "active",
+    Completed: "completed",
+    Failed: "failed",
+    All: "all",
   };
 
-  const filteredTasks = filterTasks(tasks);
+  // Filter tasks based on selected filter
+  const filteredTasks =
+    selectedFilter === "All"
+      ? tasks
+      : tasks.filter(
+          (task) =>
+            task.status === statusMap[selectedFilter] ||
+            task.status === selectedFilter
+        );
+
+  // Sort tasks by due date (soonest first, empty dueDate last)
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    if (!a.dueDate) return 1;
+    if (!b.dueDate) return -1;
+    return new Date(a.dueDate) - new Date(b.dueDate);
+  });
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredTasks.map((task) => {
-        if (task.active)
-          return (
-            <AcceptTask
-              key={task.id}
-              data={task}
-              updateTaskStatus={updateTaskStatus}
-            />
-          );
-        if (task.newTask)
-          return (
-            <NewTask
-              key={task.id}
-              data={task}
-              updateTaskStatus={updateTaskStatus}
-            />
-          );
-        if (task.completed)
-          return <CompleteTask key={task.id} data={task} />;
-        if (task.failed) return <FailedTask key={task.id} data={task} />;
-        return null;
-      })}
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold text-gray-700 mb-6">
+        {selectedFilter === "All" ? "All Tasks" : selectedFilter + " Tasks"}
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedTasks.length === 0 ? (
+          <div className="col-span-full text-center text-gray-400 py-8">
+            No tasks found.
+          </div>
+        ) : (
+          sortedTasks.map((task) => {
+            if (task.status === "active")
+              return (
+                <AcceptTask
+                  key={task._id}
+                  data={task}
+                  updateTaskStatus={updateTaskStatus}
+                />
+              );
+            if (task.status === "newTask")
+              return (
+                <NewTask
+                  key={task._id}
+                  data={task}
+                  updateTaskStatus={updateTaskStatus}
+                />
+              );
+            if (task.status === "completed")
+              return <CompleteTask key={task._id} data={task} />;
+            if (task.status === "failed")
+              return <FailedTask key={task._id} data={task} />;
+            return null;
+          })
+        )}
+      </div>
     </div>
   );
 };

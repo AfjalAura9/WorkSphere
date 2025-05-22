@@ -1,8 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import axios from "axios";
 
-const AllTask = ({ onUserClick }) => {
-  const [userData] = useContext(AuthContext);
+const AllTask = ({ onUserClick, refreshTrigger }) => {
+  const [userData, setUserData] = useContext(AuthContext);
+  const [employees, setEmployees] = useState(userData || []);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const res = await axios.get("/api/employees");
+      setEmployees(res.data);
+      setUserData(res.data);
+    };
+    fetchEmployees();
+  }, [refreshTrigger]); // Reload when refreshTrigger changes
+
+  const handleUserClick = async (user) => {
+    try {
+      const res = await axios.get(`/api/employees/${user._id || user.id}`);
+      onUserClick(res.data);
+    } catch (err) {
+      alert("Failed to load employee details.");
+    }
+  };
 
   return (
     <div className="p-6 rounded-lg mt-6 shadow-lg border-2 border-gray-300">
@@ -16,27 +36,27 @@ const AllTask = ({ onUserClick }) => {
       </div>
 
       <div className="space-y-3">
-        {userData?.length > 0 ? (
-          userData.map((user, index) => (
+        {employees?.length > 0 ? (
+          employees.map((user, index) => (
             <div
-              key={index}
-              onClick={() => onUserClick(user)}
+              key={user._id || user.id || index}
+              onClick={() => handleUserClick(user)}
               className="cursor-pointer grid grid-cols-5 gap-4 items-center text-sm text-gray-100 bg-gray-800 hover:bg-gray-700 transition-all px-4 py-3 rounded-lg border border-gray-700"
             >
               <h2 className="text-center font-medium text-white">
                 {user.firstName}
               </h2>
               <h3 className="text-center text-blue-400 font-semibold">
-                {user.taskCounts.newTask}
+                {user.taskCounts.newTask || 0}
               </h3>
               <h3 className="text-center text-yellow-400 font-semibold">
-                {user.taskCounts.active}
+                {user.taskCounts.active || 0}
               </h3>
               <h3 className="text-center text-green-400 font-semibold">
-                {user.taskCounts.completed}
+                {user.taskCounts.completed || 0}
               </h3>
               <h3 className="text-center text-red-500 font-semibold">
-                {user.taskCounts.failed}
+                {user.taskCounts.failed || 0}
               </h3>
             </div>
           ))

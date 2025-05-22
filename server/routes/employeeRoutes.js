@@ -1,12 +1,34 @@
-const express = require('express');
+import express from "express";
+import mongoose from "mongoose";
+import Employee from "../models/Employee.js";
+
 const router = express.Router();
-const employeeController = require('../controllers/employeeControllers');
 
-// Routes
-router.get('/', employeeController.getEmployees);
-router.get('/:id', employeeController.getEmployeeById);
-router.post('/', employeeController.createEmployee);
-router.put('/:id', employeeController.updateEmployee);
-router.delete('/:id', employeeController.deleteEmployee);
+// GET /api/employees
+router.get("/", async (req, res) => {
+  try {
+    const employees = await Employee.find({});
+    res.json(employees);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch employees" });
+  }
+});
 
-module.exports = router;
+// GET /api/employees/:id
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ error: "Invalid employee ID" });
+    }
+    const employee = await Employee.findById(id).populate("tasks");
+    if (!employee) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    res.json(employee);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch employee details" });
+  }
+});
+
+export default router;

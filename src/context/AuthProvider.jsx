@@ -1,17 +1,23 @@
 import React, { createContext, useEffect, useState } from "react";
-import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(() => {
-    const { employees } = getLocalStorage();
-    return employees || [];
-  });
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    setLocalStorage({ employees: userData });
-  }, [userData]);
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get("/api/employees");
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch employees:", error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   return (
     <AuthContext.Provider value={[userData, setUserData]}>
