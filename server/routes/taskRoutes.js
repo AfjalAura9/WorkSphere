@@ -81,6 +81,12 @@ router.put("/:id/status", async (req, res) => {
       await Employee.findByIdAndUpdate(employeeId, { $inc: update });
     }
 
+    // Emit a Socket.IO event to notify the admin dashboard
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("taskStatusUpdated", { employeeId, taskId: id, status });
+    }
+
     res.json(task);
   } catch (err) {
     res.status(500).json({ error: "Failed to update task status" });

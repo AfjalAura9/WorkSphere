@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import Notification from "../components/common/Notification";
 
 export const NotificationContext = createContext();
 
@@ -7,6 +8,7 @@ export const NotificationProvider = ({ children }) => {
     const stored = localStorage.getItem("notifications");
     return stored ? JSON.parse(stored) : [];
   });
+  const [popupMessage, setPopupMessage] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("notifications", JSON.stringify(notifications));
@@ -17,12 +19,11 @@ export const NotificationProvider = ({ children }) => {
       { ...notif, id: Date.now(), read: false },
       ...prev,
     ]);
+    setPopupMessage(notif.message); // Trigger pop-up
   };
 
   const markAllRead = () => {
-    setNotifications((prev) =>
-      prev.map((n) => ({ ...n, read: true }))
-    );
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
   const markAsRead = (id) => {
@@ -36,6 +37,12 @@ export const NotificationProvider = ({ children }) => {
       value={{ notifications, addNotification, markAllRead, markAsRead }}
     >
       {children}
+      {popupMessage && (
+        <Notification
+          message={popupMessage}
+          onClose={() => setPopupMessage(null)}
+        />
+      )}
     </NotificationContext.Provider>
   );
 };

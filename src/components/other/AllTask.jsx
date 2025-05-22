@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const SOCKET_URL = "http://localhost:5000";
 
 const AllTask = ({ onUserClick, refreshTrigger }) => {
   const [userData, setUserData] = useContext(AuthContext);
   const [employees, setEmployees] = useState(userData || []);
+  const socketRef = useState(null);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -14,6 +18,24 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
     };
     fetchEmployees();
   }, [refreshTrigger]); // Reload when refreshTrigger changes
+
+  useEffect(() => {
+    socketRef.current = io(SOCKET_URL);
+
+    // Listen for taskStatusUpdated event
+    socketRef.current.on("taskStatusUpdated", () => {
+      const fetchEmployees = async () => {
+        const res = await axios.get("/api/employees");
+        setEmployees(res.data);
+        setUserData(res.data);
+      };
+      fetchEmployees();
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
 
   const handleUserClick = async (user) => {
     try {
