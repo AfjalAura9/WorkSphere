@@ -1,6 +1,6 @@
 # 🧠 WorkSphere
 
-WorkSphere is a smart task management and employee collaboration platform built to simplify workflows, improve productivity, and promote teamwork. It offers **role-based access** for admins and employees, enabling seamless task assignment, tracking, and management in real-time.
+WorkSphere is a smart task management and employee collaboration platform built to simplify workflows, improve productivity, and promote teamwork. It offers role-based access for admins and employees, enabling seamless task assignment, tracking, and management in real time.
 
 ---
 
