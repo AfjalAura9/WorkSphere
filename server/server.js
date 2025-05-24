@@ -1,17 +1,16 @@
 import "dotenv/config.js";
 import express from "express";
 import cors from "cors";
-import connectDB from "./config/db.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import http from "http";
 import mongoose from "mongoose";
+import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
 
 // --- Socket.IO setup ---
-import { Server } from "socket.io";
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173", // Frontend URL
@@ -26,7 +25,7 @@ app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI) // Correct
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 

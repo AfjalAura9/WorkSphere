@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const statusColors = {
   new: "bg-blue-100 border-blue-400",
@@ -243,6 +244,11 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
       )}
     </div>
   );
+};
+
+AdminTaskList.propTypes = {
+  tasks: PropTypes.array,
+  onTaskUpdated: PropTypes.func,
 };
 
 export default AdminTaskList;
