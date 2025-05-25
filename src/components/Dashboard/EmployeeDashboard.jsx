@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import Header from "../other/Header";
 import TaskListNumbers from "../other/TaskListNumbers";
 import TaskList from "../TaskList/TaskList";
 import { NotificationContext } from "../../context/NotificationContext";
 import axios from "axios";
 import { io } from "socket.io-client";
-const SOCKET_URL = import.meta.env.VITE_API_URL; // <-- update this
+const SOCKET_URL = import.meta.env.VITE_API_URL;
 
 const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
   if (!data || !data._id) return null;
@@ -101,7 +101,10 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
 
   const updateTaskStatus = async (taskId, status) => {
     try {
-      await axios.put(`/api/tasks/${taskId}/status`, { status });
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${taskId}/status`,
+        { status }
+      );
       await loadEmployeeData();
     } catch (err) {
       console.error("Failed to update task status:", err);

@@ -1,8 +1,10 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Modal from "../common/Modal";
 import ConfirmModal from "../common/ConfirmModal";
 import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ManageUsers = ({ onBack }) => {
   const [userData, setUserData] = useContext(AuthContext);
@@ -20,7 +22,7 @@ const ManageUsers = ({ onBack }) => {
 
   const refreshUsers = async () => {
     try {
-      const response = await axios.get("/api/employees");
+      const response = await axios.get(`${API_URL}/api/employees`);
       setUserData(response.data);
     } catch (err) {
       console.error("Failed to refresh users:", err);
@@ -48,7 +50,7 @@ const ManageUsers = ({ onBack }) => {
       return;
     }
     try {
-      await axios.post("/api/employees", {
+      await axios.post(`${API_URL}/api/employees`, {
         ...formState,
         password: "123",
         taskCounts: {
@@ -78,7 +80,7 @@ const ManageUsers = ({ onBack }) => {
 
   const handleUpdateUser = async () => {
     try {
-      await axios.put(`/api/employees/${editId}`, formState);
+      await axios.put(`${API_URL}/api/employees/${editId}`, formState);
       await refreshUsers();
       resetForm();
     } catch (err) {
@@ -93,7 +95,7 @@ const ManageUsers = ({ onBack }) => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/api/employees/${deleteId}`);
+      await axios.delete(`${API_URL}/api/employees/${deleteId}`);
       await refreshUsers();
       setIsConfirmOpen(false);
       setDeleteId(null);
@@ -124,7 +126,9 @@ const ManageUsers = ({ onBack }) => {
       </button>
       <div className="bg-white rounded-xl shadow-lg p-8 mb-10">
         <h2 className="text-2xl font-bold mb-6 text-blue-700 flex items-center gap-2">
-          <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-base">Add User</span>
+          <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-base">
+            Add User
+          </span>
         </h2>
         <form
           onSubmit={(e) => {
@@ -176,7 +180,9 @@ const ManageUsers = ({ onBack }) => {
 
       <div className="bg-white rounded-xl shadow-lg p-8">
         <h2 className="text-2xl font-bold mb-6 text-blue-700 flex items-center gap-2">
-          <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-base">Manage Users</span>
+          <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-base">
+            Manage Users
+          </span>
         </h2>
         <input
           type="text"
@@ -189,9 +195,15 @@ const ManageUsers = ({ onBack }) => {
           <table className="min-w-full bg-white rounded-lg shadow">
             <thead>
               <tr>
-                <th className="py-3 px-4 text-left text-blue-700 font-semibold">Name</th>
-                <th className="py-3 px-4 text-left text-blue-700 font-semibold">Email</th>
-                <th className="py-3 px-4 text-left text-blue-700 font-semibold">Actions</th>
+                <th className="py-3 px-4 text-left text-blue-700 font-semibold">
+                  Name
+                </th>
+                <th className="py-3 px-4 text-left text-blue-700 font-semibold">
+                  Email
+                </th>
+                <th className="py-3 px-4 text-left text-blue-700 font-semibold">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>

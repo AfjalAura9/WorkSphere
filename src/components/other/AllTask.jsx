@@ -42,7 +42,9 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
 
   const handleUserClick = async (user) => {
     try {
-      const res = await axios.get(`/api/employees/${user._id || user.id}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/employees/${user._id || user.id}`
+      );
       onUserClick(res.data);
     } catch (err) {
       alert("Failed to load employee details.");

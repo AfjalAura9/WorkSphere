@@ -54,12 +54,11 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
   // Handle Delete
   const confirmDelete = async () => {
     try {
-      console.log("Deleting task with ID:", deleteId); // Debugging
       await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/tasks/${deleteId}`
       );
       setDeleteId(null);
-      if (onTaskUpdated) onTaskUpdated(); // Notify parent to refresh tasks
+      if (onTaskUpdated) onTaskUpdated();
     } catch (err) {
       console.error("Failed to delete task:", err);
       alert("Failed to delete task. Please try again.");
@@ -69,7 +68,6 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
   // Handle Remind
   const handleRemind = async (task) => {
     try {
-      console.log("Sending reminder for task:", task._id); // Debugging
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/tasks/${task._id}/remind`
       );
