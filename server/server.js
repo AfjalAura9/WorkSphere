@@ -15,7 +15,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "https://worksphere-2.onrender.com", // your backend
-      "https://your-frontend.vercel.app", // your Vercel frontend
+      "https://worksphere-peach.vercel.app/", // your Vercel frontend
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
