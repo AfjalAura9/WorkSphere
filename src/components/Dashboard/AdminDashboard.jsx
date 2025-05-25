@@ -45,9 +45,9 @@ const AdminDashboard = (props) => {
                 <h2 className="text-lg md:text-2xl font-bold text-blue-600 mb-4 text-center">
                   Assign New Task
                 </h2>
-                <form className="grid grid-cols-1 gap-4">
+                <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Title */}
-                  <div>
+                  <div className="col-span-1">
                     <label className="block text-gray-700 font-medium mb-2">
                       Title
                     </label>
@@ -59,7 +59,7 @@ const AdminDashboard = (props) => {
                   </div>
 
                   {/* Due Date */}
-                  <div>
+                  <div className="col-span-1">
                     <label className="block text-gray-700 font-medium mb-2">
                       Due Date
                     </label>
@@ -71,7 +71,7 @@ const AdminDashboard = (props) => {
                   </div>
 
                   {/* Category */}
-                  <div>
+                  <div className="col-span-1">
                     <label className="block text-gray-700 font-medium mb-2">
                       Category
                     </label>
@@ -81,7 +81,7 @@ const AdminDashboard = (props) => {
                   </div>
 
                   {/* Assign To */}
-                  <div>
+                  <div className="col-span-1">
                     <label className="block text-gray-700 font-medium mb-2">
                       Assign To
                     </label>
@@ -91,7 +91,7 @@ const AdminDashboard = (props) => {
                   </div>
 
                   {/* Description */}
-                  <div>
+                  <div className="col-span-1 md:col-span-2">
                     <label className="block text-gray-700 font-medium mb-2">
                       Description
                     </label>
@@ -103,7 +103,7 @@ const AdminDashboard = (props) => {
                   </div>
 
                   {/* Assign Task Button */}
-                  <div>
+                  <div className="col-span-1 md:col-span-2">
                     <button
                       type="submit"
                       className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
