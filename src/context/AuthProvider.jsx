@@ -9,7 +9,9 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("/api/employees");
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/employees`
+        );
         setUserData(response.data);
       } catch (error) {
         console.error("Failed to fetch employees:", error);
