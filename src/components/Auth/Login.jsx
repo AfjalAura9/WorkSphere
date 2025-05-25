@@ -38,7 +38,7 @@ const Login = ({ handleLogin }) => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <div className="bg-white shadow-2xl rounded-2xl px-10 py-12 w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <img src="/public/Logo.png" alt="Logo" className="w-32 h-32 mb-2" />
+          <img src="/Logo.png" alt="Logo" className="w-32 h-32 mb-2" />
           <h2 className="text-3xl font-bold text-blue-700 mb-2">
             Welcome Back!
           </h2>
