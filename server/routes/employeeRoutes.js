@@ -31,4 +31,38 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// POST /api/employees
+router.post("/", async (req, res) => {
+  try {
+    const { firstName, lastName, email, password, taskCounts, tasks } =
+      req.body;
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    // Check for duplicate email
+    const existing = await Employee.findOne({ email });
+    if (existing) {
+      return res.status(409).json({ error: "Email already exists" });
+    }
+    const employee = await Employee.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      taskCounts: taskCounts || {
+        newTask: 0,
+        active: 0,
+        completed: 0,
+        failed: 0,
+      },
+      tasks: tasks || [],
+    });
+    res.status(201).json(employee);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Failed to create employee", details: err.message });
+  }
+});
+
 export default router;
