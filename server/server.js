@@ -14,21 +14,31 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      "https://worksphere-2.onrender.com", // your backend
-      "https://worksphere-peach.vercel.app/", // your Vercel frontend
+      "https://worksphere-peach.vercel.app", // <-- no trailing slash
+      "https://worksphere-2.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   },
 });
 app.set("io", io); // Make io available in routes
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://worksphere-peach.vercel.app", // your Vercel frontend
+      "https://worksphere-2.onrender.com", // your backend (optional, for testing)
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)     // Ensure you have a .env file with MONGO_URI set   
+  .connect(process.env.MONGO_URI) // Ensure you have a .env file with MONGO_URI set
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
@@ -38,7 +48,7 @@ app.use("/api/tasks", taskRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);     
+  console.error("Unhandled error:", err);
   res.status(500).json({ message: "Internal Server Error" });
 });
 
