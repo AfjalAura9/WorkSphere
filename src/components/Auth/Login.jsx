@@ -13,7 +13,7 @@ const Login = ({ handleLogin }) => {
     if (isAdminLogin) {
       // Admin login
       if (email === "admin@me.com" && password === "123") {
-        handleLogin("admin", null);
+        handleLogin("admin", { firstName: "Admin" }); // <-- Pass admin name here
       } else {
         alert("Invalid Admin Credentials.");
       }

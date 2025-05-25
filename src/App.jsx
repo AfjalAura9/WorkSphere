@@ -11,7 +11,7 @@ const App = () => {
   );
   const [loggedInUserData, setLoggedInUserData] = useState(() => {
     const stored = localStorage.getItem("loggedInUserData");
-    return stored ? JSON.parse(stored) : null;
+    return stored ? JSON.parse(stored) : { firstName: "Admin" };
   });
 
   const handleLogin = (role, userData) => {
