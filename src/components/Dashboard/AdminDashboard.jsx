@@ -46,70 +46,76 @@ const AdminDashboard = (props) => {
                   Assign New Task
                 </h2>
                 <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Title */}
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Title
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Task Title"
-                      className="w-full p-2 border rounded-lg"
-                    />
+                  {/* Left Column */}
+                  <div className="grid grid-cols-1 gap-4">
+                    {/* Title */}
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-2">
+                        Title
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Task Title"
+                        className="w-full p-2 border rounded-lg"
+                      />
+                    </div>
+
+                    {/* Due Date */}
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-2">
+                        Due Date
+                      </label>
+                      <input
+                        type="date"
+                        placeholder="dd-mm-yyyy"
+                        className="w-full p-2 border rounded-lg"
+                      />
+                    </div>
+
+                    {/* Category */}
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-2">
+                        Category
+                      </label>
+                      <select className="w-full p-2 border rounded-lg">
+                        <option>Select Category</option>
+                      </select>
+                    </div>
+
+                    {/* Assign To */}
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-2">
+                        Assign To
+                      </label>
+                      <select className="w-full p-2 border rounded-lg">
+                        <option>Select Employee</option>
+                      </select>
+                    </div>
                   </div>
 
-                  {/* Due Date */}
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Due Date
-                    </label>
-                    <input
-                      type="date"
-                      placeholder="dd-mm-yyyy"
-                      className="w-full p-2 border rounded-lg"
-                    />
-                  </div>
+                  {/* Right Column */}
+                  <div className="grid grid-cols-1 gap-4">
+                    {/* Description */}
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-2">
+                        Description
+                      </label>
+                      <textarea
+                        placeholder="Task Description"
+                        className="w-full p-2 border rounded-lg"
+                        rows="6"
+                      ></textarea>
+                    </div>
 
-                  {/* Category */}
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Category
-                    </label>
-                    <select className="w-full p-2 border rounded-lg">
-                      <option>Select Category</option>
-                    </select>
-                  </div>
-
-                  {/* Assign To */}
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Assign To
-                    </label>
-                    <select className="w-full p-2 border rounded-lg">
-                      <option>Select Employee</option>
-                    </select>
-                  </div>
-
-                  {/* Description */}
-                  <div className="col-span-1 md:col-span-2">
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Description
-                    </label>
-                    <textarea
-                      placeholder="Task Description"
-                      className="w-full p-2 border rounded-lg"
-                      rows="4"
-                    ></textarea>
-                  </div>
-
-                  {/* Assign Task Button */}
-                  <div className="col-span-1 md:col-span-2">
-                    <button
-                      type="submit"
-                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
-                    >
-                      Assign Task
-                    </button>
+                    {/* Assign Task Button */}
+                    <div>
+                      <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                      >
+                        Assign Task
+                      </button>
+                    </div>
                   </div>
                 </form>
               </div>
