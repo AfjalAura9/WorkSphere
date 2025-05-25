@@ -13,7 +13,10 @@ const server = http.createServer(app);
 // --- Socket.IO setup ---
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Frontend URL
+    origin: [
+      "https://worksphere-2.onrender.com", // your backend
+      "https://your-frontend.vercel.app", // your Vercel frontend
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -25,7 +28,7 @@ app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI)     // Ensure you have a .env file with MONGO_URI set   
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
@@ -35,7 +38,7 @@ app.use("/api/tasks", taskRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
+  console.error("Unhandled error:", err);     
   res.status(500).json({ message: "Internal Server Error" });
 });
 
