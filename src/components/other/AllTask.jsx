@@ -53,7 +53,6 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
 
   return (
     <div className="p-6 rounded-lg mt-6 shadow-lg border-2 border-gray-300">
-      <h2 className="text-xl font-bold text-gray-800 mb-6">Assigned Tasks</h2>
       <div className="grid grid-cols-5 gap-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-sm py-3 px-4 rounded-lg mb-4">
         <h2 className="text-center">Employee Name</h2>
         <h3 className="text-center">New</h3>
