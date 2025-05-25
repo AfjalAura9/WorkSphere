@@ -25,8 +25,11 @@ const AdminDashboard = (props) => {
 
   return (
     <div className="flex h-screen">
+      {/* Sidebar */}
       <Sidebar activePage={activePage} setActivePage={handleSidebarChange} />
-      <div className="flex-1 bg-white p-7 overflow-y-auto">
+
+      {/* Main Content */}
+      <div className="flex-1 bg-white p-7 overflow-y-auto ml-0 md:ml-64">
         <Header changeUser={props.changeUser} data={props.data} />
         {selectedUser ? (
           <UserProfile
