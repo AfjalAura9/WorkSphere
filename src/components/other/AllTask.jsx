@@ -3,11 +3,11 @@ import { AuthContext } from "../../context/AuthProvider";
 import axios from "axios";
 import { io } from "socket.io-client";
 const SOCKET_URL = import.meta.env.VITE_API_URL;
-const socketRef = useRef(null);
 
 const AllTask = ({ onUserClick, refreshTrigger }) => {
   const [userData, setUserData] = useContext(AuthContext);
   const [employees, setEmployees] = useState(userData || []);
+  const socketRef = useRef(null); // ✅ CORRECT PLACE
 
   useEffect(() => {
     const fetchEmployees = async () => {
