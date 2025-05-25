@@ -33,7 +33,10 @@ const CreateTask = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/tasks/assign", formState);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/tasks/assign`,
+        formState
+      );
       setSuccessMsg("Task assigned successfully!");
       setFormState({
         title: "",
@@ -137,10 +140,14 @@ const CreateTask = () => {
           <div className="flex-1" />
           <div className="mt-6 flex flex-col gap-2">
             {successMsg && (
-              <div className="text-green-600 font-semibold text-center">{successMsg}</div>
+              <div className="text-green-600 font-semibold text-center">
+                {successMsg}
+              </div>
             )}
             {errorMsg && (
-              <div className="text-red-600 font-semibold text-center">{errorMsg}</div>
+              <div className="text-red-600 font-semibold text-center">
+                {errorMsg}
+              </div>
             )}
             <button
               type="submit"

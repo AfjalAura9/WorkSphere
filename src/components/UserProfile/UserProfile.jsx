@@ -11,7 +11,9 @@ const UserProfile = ({ user = {}, isAdmin, onBack, onTaskChanged }) => {
 
   // Refresh user data after task update
   const refreshUser = async () => {
-    const res = await axios.get(`/api/employees/${user._id || user.id}`);
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/employees/${user._id || user.id}`
+    );
     setCurrentUser(res.data);
     if (onTaskChanged) onTaskChanged();
   };

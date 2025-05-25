@@ -5,8 +5,7 @@ import TaskList from "../TaskList/TaskList";
 import { NotificationContext } from "../../context/NotificationContext";
 import axios from "axios";
 import { io } from "socket.io-client";
-
-const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = import.meta.env.VITE_API_URL; // <-- update this
 
 const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
   if (!data || !data._id) return null;
@@ -24,7 +23,9 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
 
   const loadEmployeeData = async () => {
     try {
-      const response = await axios.get(`/api/employees/${data._id}`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/employees/${data._id}`
+      );
       const employee = response.data;
       setTasks(employee.tasks);
 

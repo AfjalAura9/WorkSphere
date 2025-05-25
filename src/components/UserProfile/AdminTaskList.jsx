@@ -39,7 +39,10 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
   const submitEdit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/tasks/${editTask._id}`, editForm);
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${editTask._id}`,
+        editForm
+      );
       setEditTask(null);
       if (onTaskUpdated) onTaskUpdated();
     } catch (err) {
@@ -52,7 +55,9 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
   const confirmDelete = async () => {
     try {
       console.log("Deleting task with ID:", deleteId); // Debugging
-      await axios.delete(`/api/tasks/${deleteId}`);
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${deleteId}`
+      );
       setDeleteId(null);
       if (onTaskUpdated) onTaskUpdated(); // Notify parent to refresh tasks
     } catch (err) {
@@ -65,7 +70,9 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
   const handleRemind = async (task) => {
     try {
       console.log("Sending reminder for task:", task._id); // Debugging
-      await axios.post(`/api/tasks/${task._id}/remind`);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${task._id}/remind`
+      );
       alert("Reminder sent!");
       if (onTaskUpdated) onTaskUpdated();
     } catch (err) {

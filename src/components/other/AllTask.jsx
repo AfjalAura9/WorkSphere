@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axios from "axios";
 import { io } from "socket.io-client";
-
-const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = import.meta.env.VITE_API_URL; // <-- update this
 
 const AllTask = ({ onUserClick, refreshTrigger }) => {
   const [userData, setUserData] = useContext(AuthContext);
@@ -12,7 +11,9 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      const res = await axios.get("/api/employees");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/employees`
+      );
       setEmployees(res.data);
       setUserData(res.data);
     };
@@ -25,7 +26,9 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
     // Listen for taskStatusUpdated event
     socketRef.current.on("taskStatusUpdated", () => {
       const fetchEmployees = async () => {
-        const res = await axios.get("/api/employees");
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/employees`
+        );
         setEmployees(res.data);
         setUserData(res.data);
       };
