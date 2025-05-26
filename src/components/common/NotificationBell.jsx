@@ -10,12 +10,11 @@ const NotificationBell = () => {
 
   const handleOpen = () => {
     setOpen(!open);
-    if (!open) markAllRead(); // Mark all notifications as read when opening
+    if (!open) markAllRead();
   };
 
   return (
     <div className="relative">
-      {/* Bell Icon */}
       <button
         className="relative focus:outline-none"
         onClick={handleOpen}
@@ -24,7 +23,7 @@ const NotificationBell = () => {
         {/* SVG Bell Icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-blue-600"
+          className="h-6 w-6 text-gray-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -41,8 +40,6 @@ const NotificationBell = () => {
           <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-3 h-3"></span>
         )}
       </button>
-
-      {/* Notification Dropdown */}
       {open && (
         <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg z-50 max-h-96 overflow-y-auto">
           <div className="p-4 border-b font-bold text-gray-700 flex justify-between items-center">
