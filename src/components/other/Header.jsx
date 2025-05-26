@@ -1,51 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiMenu, FiBell } from "react-icons/fi";
+import Sidebar from "../other/Sidebar"; // Import the existing Sidebar component
 
-const Header = ({ changeUser, data }) => {
+const Header = ({ changeUser, data, activePage, setActivePage }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
+
   const logOutUser = () => {
     if (changeUser) changeUser(null);
   };
 
   return (
-    <header className="flex items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg mb-4">
-      {/* Left Section: Hamburger Menu and Greeting */}
-      <div className="flex items-center gap-4">
-        {/* Hamburger Menu */}
-        <button className="text-gray-600 text-2xl md:hidden">
-          <FiMenu />
-        </button>
+    <>
+      {/* Header */}
+      <header className="flex items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg mb-4">
+        {/* Left Section: Hamburger Menu and Greeting */}
+        <div className="flex items-center gap-4">
+          {/* Hamburger Menu */}
+          <button
+            className="text-gray-600 text-2xl md:hidden"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <FiMenu />
+          </button>
 
-        {/* Greeting */}
-        <div className="flex flex-col">
-          <h1 className="text-lg md:text-xl font-bold text-gray-800">
-            Hello,{" "}
-            <span className="text-blue-600">{data?.name || "Admin"}</span>
-          </h1>
-          <span className="text-sm text-gray-500 hidden md:block">
-            Welcome back!
-          </span>
+          {/* Greeting */}
+          <div className="flex flex-col">
+            <h1 className="text-lg md:text-xl font-bold text-gray-800">
+              Hello,{" "}
+              <span className="text-blue-600">{data?.name || "Admin"}</span>
+            </h1>
+            <span className="text-sm text-gray-500 hidden md:block">
+              Welcome back!
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* Right Section: Notification and Log Out */}
-      <div className="flex items-center gap-4">
-        {/* Notification Icon */}
-        <button className="text-gray-600 text-xl relative">
-          <FiBell />
-          <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-1">
-            3
-          </span>
-        </button>
+        {/* Right Section: Notification and Log Out */}
+        <div className="flex items-center gap-4">
+          {/* Notification Icon */}
+          <button className="text-gray-600 text-xl relative">
+            <FiBell />
+            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-1">
+              3
+            </span>
+          </button>
 
-        {/* Log Out Button */}
-        <button
-          onClick={logOutUser}
-          className="bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
-        >
-          Log Out
-        </button>
-      </div>
-    </header>
+          {/* Log Out Button */}
+          <button
+            onClick={logOutUser}
+            className="bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
+          >
+            Log Out
+          </button>
+        </div>
+      </header>
+
+      {/* Sidebar for Small Screens */}
+      {isSidebarOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          {/* Sidebar */}
+          <Sidebar
+            activePage={activePage}
+            setActivePage={(page) => {
+              setActivePage(page);
+              setIsSidebarOpen(false); // Close sidebar after selecting a page
+            }}
+          />
+
+          {/* Overlay */}
+          <div
+            className="flex-1 bg-black bg-opacity-50"
+            onClick={() => setIsSidebarOpen(false)}
+          ></div>
+        </div>
+      )}
+    </>
   );
 };
 
