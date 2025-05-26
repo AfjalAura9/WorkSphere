@@ -1,33 +1,50 @@
 import React from "react";
-import NotificationBell from "../common/NotificationBell";
+import { FiMenu } from "react-icons/fi";
 
-const Header = (props) => {
+const Header = ({ changeUser, data }) => {
   const logOutUser = () => {
-    if (props.changeUser) props.changeUser(null);
+    if (changeUser) changeUser(null);
   };
 
-  const user = props.data || {};
-
   return (
-    <div className="flex justify-between items-center bg-white shadow-lg p-6 rounded-lg mb-8">
-      <div>
-        <h1 className="text-2xl font-medium text-gray-800">
-          Hello,{" "}
-          <span className="text-3xl font-semibold text-blue-600">
-            {user.firstName || "User"}👋
+    <header className="flex items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg mb-4">
+      {/* Left Section: Hamburger Menu and Greeting */}
+      <div className="flex items-center gap-4">
+        {/* Hamburger Menu */}
+        <button className="text-gray-600 text-2xl md:hidden">
+          <FiMenu />
+        </button>
+
+        {/* Greeting */}
+        <div className="flex flex-col">
+          <h1 className="text-lg md:text-xl font-bold text-gray-800">
+            Hello,{" "}
+            <span className="text-blue-600">{data?.name || "Admin"}</span>
+          </h1>
+          <span className="text-sm text-gray-500 hidden md:block">
+            Welcome back!
           </span>
-        </h1>
+        </div>
       </div>
-      <div className="flex items-center gap-6">
-        <NotificationBell />
+
+      {/* Right Section: Notification and Log Out */}
+      <div className="flex items-center gap-4">
+        {/* Notification Icon */}
+        <button className="text-gray-600 text-xl">
+          <span role="img" aria-label="notification">
+            🔔
+          </span>
+        </button>
+
+        {/* Log Out Button */}
         <button
           onClick={logOutUser}
-          className="bg-red-600 text-white font-medium text-base px-6 py-3 rounded-lg hover:bg-red-700 transition duration-300"
+          className="bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
         >
           Log Out
         </button>
       </div>
-    </div>
+    </header>
   );
 };
 
