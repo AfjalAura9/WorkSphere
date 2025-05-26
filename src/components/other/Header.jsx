@@ -3,12 +3,14 @@ import { FiMenu } from "react-icons/fi";
 import NotificationBell from "../common/NotificationBell";
 import Sidebar from "../other/Sidebar";
 
-const Header = ({ changeUser, data, activePage, setActivePage }) => {
+const Header = ({
+  changeUser,
+  data,
+  activePage,
+  setActivePage,
+  logOutUser,
+}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
-
-  const logOutUser = () => {
-    if (changeUser) changeUser(null);
-  };
 
   return (
     <>
@@ -26,6 +28,14 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
         <div className="flex items-center gap-4">
           {/* Notification Bell */}
           <NotificationBell />
+
+          {/* Log Out Button (Visible only on larger screens) */}
+          <button
+            onClick={logOutUser} // Connect logOutUser function
+            className="hidden md:block bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
+          >
+            Log Out
+          </button>
 
           {/* Hamburger Menu */}
           <button
