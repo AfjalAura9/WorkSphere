@@ -47,9 +47,9 @@ const AdminDashboard = (props) => {
                   <h2 className="text-lg md:text-2xl font-bold text-blue-600 mb-4 text-center">
                     Assign New Task
                   </h2>
-                  <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Left Column */}
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-4">
                       {/* Title */}
                       <div>
                         <label className="block text-gray-700 font-medium mb-2">
@@ -96,7 +96,7 @@ const AdminDashboard = (props) => {
                     </div>
 
                     {/* Right Column */}
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-4">
                       {/* Description */}
                       <div>
                         <label className="block text-gray-700 font-medium mb-2">
