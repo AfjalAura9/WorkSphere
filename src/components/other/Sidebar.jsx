@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { FiMenu, FiX, FiUserPlus, FiClipboard } from "react-icons/fi";
+import React from "react";
+import { FiUserPlus, FiClipboard } from "react-icons/fi";
 
-const Sidebar = ({ activePage, setActivePage }) => {
-  const [isOpen, setIsOpen] = useState(false); // State to toggle the sidebar on mobile
-
+const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
   const navItems = [
     {
       label: "Assign Task",
@@ -19,14 +17,6 @@ const Sidebar = ({ activePage, setActivePage }) => {
 
   return (
     <>
-      {/* Hamburger Menu Button (Visible on small screens) */}
-      <button
-        className="md:hidden fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded-lg"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-      </button>
-
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full bg-gray-900 text-white z-40 transform ${
@@ -47,20 +37,12 @@ const Sidebar = ({ activePage, setActivePage }) => {
                 }`}
               >
                 {item.icon}
-                <span className="hidden sm:inline">{item.label}</span>
+                <span>{item.label}</span>
               </li>
             ))}
           </ul>
         </div>
       </aside>
-
-      {/* Overlay for mobile (closes sidebar when clicking outside) */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
     </>
   );
 };

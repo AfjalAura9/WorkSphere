@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiMenu, FiBell } from "react-icons/fi";
-import Sidebar from "../other/Sidebar"; // Import the existing Sidebar component
+import Sidebar from "../other/Sidebar";
 
 const Header = ({ changeUser, data, activePage, setActivePage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
@@ -65,6 +65,8 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
               setActivePage(page);
               setIsSidebarOpen(false); // Close sidebar after selecting a page
             }}
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
           />
 
           {/* Overlay */}
