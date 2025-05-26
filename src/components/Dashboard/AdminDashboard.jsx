@@ -23,14 +23,33 @@ const AdminDashboard = (props) => {
     setSelectedUser(null); // Reset selected user when switching pages
   };
 
+  const logOutUser = () => {
+    // Clear any user-related data (if applicable)
+    if (props.changeUser) {
+      props.changeUser(null); // Reset the user state in the parent component
+    }
+
+    // Redirect to the login page
+    window.location.href = "/login"; // Change this path if your login route is different
+  };
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar activePage={activePage} setActivePage={handleSidebarChange} />
+      <Sidebar
+        activePage={activePage}
+        setActivePage={handleSidebarChange}
+        logOutUser={logOutUser} // Pass logOutUser to Sidebar
+      />
 
       {/* Main Content */}
       <div className="flex-1 bg-white p-4 md:p-7 overflow-y-auto ml-0 md:ml-64">
-        <Header changeUser={props.changeUser} data={props.data} />
+        <Header
+          changeUser={props.changeUser}
+          data={props.data}
+          activePage={activePage}
+          setActivePage={handleSidebarChange}
+        />
         {selectedUser ? (
           <UserProfile
             user={selectedUser}
