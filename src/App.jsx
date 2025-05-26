@@ -1,5 +1,6 @@
+GitHub\WorkSphere\src\App.jsx
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import EmployeeDashboard from "./components/Dashboard/EmployeeDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
@@ -47,36 +48,33 @@ const App = () => {
 
   return (
     <NotificationProvider>
-      <Router>
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              !user ? (
-                <Login
-                  handleLogin={handleLogin}
-                  setIsAdmin={setIsAdmin}
-                  isAdmin={isAdmin}
-                />
-              ) : user === "admin" ? (
-                <AdminDashboard
-                  changeUser={handleLogout}
-                  data={loggedInUserData}
-                />
-              ) : (
-                <EmployeeDashboard
-                  changeUser={handleLogout}
-                  data={loggedInUserData}
-                />
-              )
-            }
-          />
-          <Route path="/dashboard/admin" element={<AdminDashboard />} />
-          <Route path="/dashboard/employee" element={<EmployeeDashboard />} />
-          <Route path="*" element={<Login />} />{" "}
-          {/* Redirect undefined routes to login */}
-        </Routes>
-      </Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            !user ? (
+              <Login
+                handleLogin={handleLogin}
+                setIsAdmin={setIsAdmin}
+                isAdmin={isAdmin}
+              />
+            ) : user === "admin" ? (
+              <AdminDashboard
+                changeUser={handleLogout}
+                data={loggedInUserData}
+              />
+            ) : (
+              <EmployeeDashboard
+                changeUser={handleLogout}
+                data={loggedInUserData}
+              />
+            )
+          }
+        />
+        <Route path="/dashboard/admin" element={<AdminDashboard />} />
+        <Route path="/dashboard/employee" element={<EmployeeDashboard />} />
+        <Route path="*" element={<Login />} /> {/* Redirect undefined routes to login */}
+      </Routes>
     </NotificationProvider>
   );
 };
