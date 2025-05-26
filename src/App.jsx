@@ -5,6 +5,8 @@ import EmployeeDashboard from "./components/Dashboard/EmployeeDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import { NotificationProvider } from "./context/NotificationContext";
 
+const noop = () => {};
+
 const App = () => {
   const [user, setUser] = useState(() => localStorage.getItem("userRole"));
   const [isAdmin, setIsAdmin] = useState(
@@ -29,11 +31,10 @@ const App = () => {
     setLoggedInUserData(null);
     localStorage.removeItem("userRole");
     localStorage.removeItem("loggedInUserData");
-    localStorage.removeItem("notifications"); // Optional: clear notifications on logout
+    localStorage.removeItem("notifications");
   };
 
   useEffect(() => {
-    // Optionally, listen for storage changes in other tabs
     const syncLogout = () => {
       if (!localStorage.getItem("userRole")) {
         setUser(null);
@@ -61,18 +62,26 @@ const App = () => {
               <AdminDashboard
                 changeUser={handleLogout}
                 data={loggedInUserData}
+                onTaskUpdated={noop}
               />
             ) : (
               <EmployeeDashboard
                 changeUser={handleLogout}
                 data={loggedInUserData}
+                onTaskUpdated={noop}
               />
             )
           }
         />
-        <Route path="/dashboard/admin" element={<AdminDashboard />} />
-        <Route path="/dashboard/employee" element={<EmployeeDashboard />} />
-        <Route path="*" element={<Login />} /> {/* Redirect undefined routes to login */}
+        <Route
+          path="/dashboard/admin"
+          element={<AdminDashboard onTaskUpdated={noop} />}
+        />
+        <Route
+          path="/dashboard/employee"
+          element={<EmployeeDashboard onTaskUpdated={noop} />}
+        />
+        <Route path="*" element={<Login />} />
       </Routes>
     </NotificationProvider>
   );
