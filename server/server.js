@@ -6,6 +6,8 @@ import taskRoutes from "./routes/taskRoutes.js";
 import http from "http";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const server = http.createServer(app);
@@ -50,6 +52,16 @@ app.use("/api/tasks", taskRoutes);
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
   res.status(500).json({ message: "Internal Server Error" });
+});
+
+// Serve React Frontend
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 // Health check & start
