@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { FiMenu, FiBell } from "react-icons/fi";
+import { FiMenu } from "react-icons/fi";
 import Sidebar from "../other/Sidebar";
+import NotificationBell from "../common/NotificationBell";
 
 const Header = ({ changeUser, data, activePage, setActivePage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
@@ -37,13 +38,8 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
 
         {/* Right Section: Notification and Log Out */}
         <div className="flex items-center gap-4">
-          {/* Notification Icon */}
-          <button className="text-gray-600 text-xl relative">
-            <FiBell />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-1">
-              3
-            </span>
-          </button>
+          {/* Notification Bell */}
+          <NotificationBell />
 
           {/* Log Out Button (Visible only on larger screens) */}
           <button

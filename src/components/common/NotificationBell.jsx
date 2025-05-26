@@ -10,11 +10,12 @@ const NotificationBell = () => {
 
   const handleOpen = () => {
     setOpen(!open);
-    if (!open) markAllRead();
+    if (!open) markAllRead(); // Mark all notifications as read when opening
   };
 
   return (
     <div className="relative">
+      {/* Bell Icon */}
       <button
         className="relative focus:outline-none"
         onClick={handleOpen}
@@ -40,6 +41,8 @@ const NotificationBell = () => {
           <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-3 h-3"></span>
         )}
       </button>
+
+      {/* Notification Dropdown */}
       {open && (
         <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg z-50 max-h-96 overflow-y-auto">
           <div className="p-4 border-b font-bold text-gray-700 flex justify-between items-center">
