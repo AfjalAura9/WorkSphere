@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
-import Sidebar from "../other/Sidebar";
 import NotificationBell from "../common/NotificationBell";
+import Sidebar from "../other/Sidebar";
 
 const Header = ({ changeUser, data, activePage, setActivePage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
@@ -14,39 +14,25 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
     <>
       {/* Header */}
       <header className="flex items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg mb-4">
-        {/* Left Section: Hamburger Menu and Greeting */}
+        {/* Left Section: Greeting */}
         <div className="flex items-center gap-4">
+          <h1 className="text-lg md:text-xl font-bold text-gray-800">
+            Hello,{" "}
+            <span className="text-blue-600">{data?.name || "Admin"}</span>
+          </h1>
+        </div>
+
+        {/* Right Section: Hamburger Menu and Notification */}
+        <div className="flex items-center gap-4">
+          {/* Notification Bell */}
+          <NotificationBell />
+
           {/* Hamburger Menu */}
           <button
             className="text-gray-600 text-2xl md:hidden"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             <FiMenu />
-          </button>
-
-          {/* Greeting */}
-          <div className="flex flex-col">
-            <h1 className="text-lg md:text-xl font-bold text-gray-800">
-              Hello,{" "}
-              <span className="text-blue-600">{data?.name || "Admin"}</span>
-            </h1>
-            <span className="text-sm text-gray-500 hidden md:block">
-              Welcome back!
-            </span>
-          </div>
-        </div>
-
-        {/* Right Section: Notification and Log Out */}
-        <div className="flex items-center gap-4">
-          {/* Notification Bell */}
-          <NotificationBell />
-
-          {/* Log Out Button (Visible only on larger screens) */}
-          <button
-            onClick={logOutUser}
-            className="hidden md:block bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
-          >
-            Log Out
           </button>
         </div>
       </header>
