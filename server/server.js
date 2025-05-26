@@ -60,6 +60,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 
+// Fix for React Routes (e.g., /login)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
