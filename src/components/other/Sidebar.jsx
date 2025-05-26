@@ -23,9 +23,9 @@ const Sidebar = ({
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-full bg-gray-900 text-white z-40 transform ${
+      className={`fixed top-0 left-0 h-full bg-white text-gray-800 z-40 transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } md:translate-x-0 transition-transform duration-300 w-64`}
+      } md:translate-x-0 transition-transform duration-300 w-64 shadow-lg`}
     >
       <div className="flex flex-col h-full pt-8">
         <ul className="space-y-4 flex-1">
@@ -37,7 +37,9 @@ const Sidebar = ({
                 setIsOpen(false); // Close sidebar on mobile after clicking
               }}
               className={`flex items-center gap-4 px-4 py-3 cursor-pointer rounded-lg transition ${
-                activePage === item.key ? "bg-blue-500" : "hover:bg-gray-700"
+                activePage === item.key
+                  ? "bg-blue-100 text-blue-600 font-semibold"
+                  : "hover:bg-gray-100"
               }`}
             >
               {item.icon}
@@ -46,8 +48,8 @@ const Sidebar = ({
           ))}
         </ul>
 
-        {/* Log Out Button (Visible only in Sidebar on small screens) */}
-        <div className="p-4 md:hidden">
+        {/* Log Out Button */}
+        <div className="p-4">
           <button
             onClick={logOutUser}
             className="w-full bg-red-500 text-white text-sm py-2 px-4 rounded-lg hover:bg-red-600 transition"

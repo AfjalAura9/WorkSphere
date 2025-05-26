@@ -51,8 +51,8 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="w-full min-h-[500px] mx-auto mt-10 mb-12 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 rounded-2xl shadow-sm p-8 flex flex-col">
-      <h2 className="text-3xl font-bold text-blue-700 mb-8 text-center">
+    <div className="w-full min-h-[500px] mx-auto mt-10 mb-12 bg-white rounded-lg shadow-md p-8 flex flex-col">
+      <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
         Assign New Task
       </h2>
       <form onSubmit={submitHandler} className="flex flex-1 gap-8">
@@ -68,7 +68,7 @@ const CreateTask = () => {
               value={formState.title}
               onChange={handleChange}
               placeholder="Task Title"
-              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
               required
             />
           </div>
@@ -81,7 +81,7 @@ const CreateTask = () => {
               name="dueDate"
               value={formState.dueDate}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
               required
             />
           </div>
@@ -93,7 +93,7 @@ const CreateTask = () => {
               name="category"
               value={formState.category}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
               required
             >
               <option value="">Select Category</option>
@@ -112,7 +112,7 @@ const CreateTask = () => {
               name="assignedTo"
               value={formState.assignedTo}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
               required
             >
               <option value="">Select Employee</option>
@@ -134,7 +134,7 @@ const CreateTask = () => {
             value={formState.description}
             onChange={handleChange}
             placeholder="Task Description"
-            className="w-full h-full min-h-[220px] px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition resize-none"
+            className="w-full h-full min-h-[220px] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition resize-none"
             required
           />
           <div className="flex-1" />
