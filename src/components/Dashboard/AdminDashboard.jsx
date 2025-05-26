@@ -96,24 +96,24 @@ const AdminDashboard = (props) => {
                     </div>
 
                     {/* Right Column */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 flex flex-col justify-between">
                       {/* Description */}
-                      <div>
+                      <div className="flex-1">
                         <label className="block text-gray-700 font-medium mb-2">
                           Description
                         </label>
                         <textarea
                           placeholder="Task Description"
-                          className="w-full p-2 border rounded-lg"
+                          className="w-full p-2 border rounded-lg h-full"
                           rows="6"
                         ></textarea>
                       </div>
 
                       {/* Assign Task Button */}
-                      <div>
+                      <div className="flex items-center justify-end">
                         <button
                           type="submit"
-                          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                          className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
                         >
                           Assign Task
                         </button>
