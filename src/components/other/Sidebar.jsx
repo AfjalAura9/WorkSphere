@@ -1,7 +1,13 @@
 import React from "react";
 import { FiUserPlus, FiClipboard } from "react-icons/fi";
 
-const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
+const Sidebar = ({
+  activePage,
+  setActivePage,
+  isOpen,
+  setIsOpen,
+  logOutUser,
+}) => {
   const navItems = [
     {
       label: "Assign Task",
@@ -22,6 +28,7 @@ const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
       } md:translate-x-0 transition-transform duration-300 w-64`}
     >
       <div className="flex flex-col h-full pt-8">
+        {/* Navigation Items */}
         <ul className="space-y-4 flex-1">
           {navItems.map((item) => (
             <li
@@ -29,8 +36,6 @@ const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
               onClick={() => {
                 if (typeof setActivePage === "function") {
                   setActivePage(item.key); // Call setActivePage only if it's a function
-                } else {
-                  console.error("setActivePage is not a function");
                 }
                 if (setIsOpen) setIsOpen(false); // Close sidebar on mobile after clicking
               }}
@@ -43,6 +48,16 @@ const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
             </li>
           ))}
         </ul>
+
+        {/* Log Out Button (Visible only in Sidebar on small screens) */}
+        <div className="p-4">
+          <button
+            onClick={logOutUser}
+            className="w-full bg-red-500 text-white text-sm py-2 px-4 rounded-lg hover:bg-red-600 transition"
+          >
+            Log Out
+          </button>
+        </div>
       </div>
     </aside>
   );

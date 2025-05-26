@@ -15,7 +15,13 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
       <header className="flex items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg mb-4">
         {/* Left Section: Hamburger Menu and Greeting */}
         <div className="flex items-center gap-4">
-        
+          {/* Hamburger Menu */}
+          <button
+            className="text-gray-600 text-2xl md:hidden"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <FiMenu />
+          </button>
 
           {/* Greeting */}
           <div className="flex flex-col">
@@ -39,19 +45,12 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
             </span>
           </button>
 
-          {/* Log Out Button */}
+          {/* Log Out Button (Visible only on larger screens) */}
           <button
             onClick={logOutUser}
-            className="bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
+            className="hidden md:block bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
           >
             Log Out
-          </button>
-            {/* Hamburger Menu */}
-          <button
-            className="text-gray-600 text-2xl md:hidden"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            <FiMenu />
           </button>
         </div>
       </header>
@@ -68,6 +67,7 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
             }}
             isOpen={isSidebarOpen}
             setIsOpen={setIsSidebarOpen}
+            logOutUser={logOutUser} // Pass logOutUser to Sidebar
           />
 
           {/* Overlay */}
