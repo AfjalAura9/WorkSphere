@@ -4,7 +4,7 @@ import NewTask from "./NewTask";
 import CompleteTask from "./CompleteTask";
 import FailedTask from "./FailedTask";
 
-const TaskList = ({ tasks, selectedFilter, updateTaskStatus }) => {
+const TaskList = ({ tasks, selectedFilter, updateTaskStatus = () => {} }) => {
   // Map filter keys to status values
   const statusMap = {
     new: "NewTask",

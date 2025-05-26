@@ -18,7 +18,7 @@ const statusLabels = {
   failed: "Failed",
 };
 
-const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
+const AdminTaskList = ({ tasks = [], onTaskUpdated = () => {} }) => {
   const [editTask, setEditTask] = useState(null);
   const [editForm, setEditForm] = useState({});
   const [deleteId, setDeleteId] = useState(null);
@@ -44,7 +44,7 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
         editForm
       );
       setEditTask(null);
-      if (onTaskUpdated) onTaskUpdated();
+      if (typeof onTaskUpdated === "function") onTaskUpdated();
     } catch (err) {
       console.error("Failed to update task:", err);
       alert("Failed to update task. Please try again.");
@@ -58,7 +58,7 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
         `${import.meta.env.VITE_API_URL}/api/tasks/${deleteId}`
       );
       setDeleteId(null);
-      if (onTaskUpdated) onTaskUpdated();
+      if (typeof onTaskUpdated === "function") onTaskUpdated();
     } catch (err) {
       console.error("Failed to delete task:", err);
       alert("Failed to delete task. Please try again.");
@@ -72,7 +72,7 @@ const AdminTaskList = ({ tasks = [], onTaskUpdated }) => {
         `${import.meta.env.VITE_API_URL}/api/tasks/${task._id}/remind`
       );
       alert("Reminder sent!");
-      if (onTaskUpdated) onTaskUpdated();
+      if (typeof onTaskUpdated === "function") onTaskUpdated();
     } catch (err) {
       console.error("Failed to send reminder:", err);
       alert("Failed to send reminder. Please try again.");

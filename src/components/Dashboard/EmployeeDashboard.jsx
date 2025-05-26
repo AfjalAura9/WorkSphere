@@ -7,7 +7,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 const SOCKET_URL = import.meta.env.VITE_API_URL;
 
-const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
+const EmployeeDashboard = ({ changeUser, data, onTaskUpdated = () => {} }) => {
   if (!data || !data._id) return null;
 
   const [tasks, setTasks] = useState([]);
@@ -19,7 +19,7 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
   });
   const [filter, setFilter] = useState("All");
   const socketRef = useRef(null);
-  const { addNotification } = useContext(NotificationContext);A
+  const { addNotification } = useContext(NotificationContext);
 
   const loadEmployeeData = async () => {
     try {
@@ -44,16 +44,13 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
 
   useEffect(() => {
     loadEmployeeData();
-  }, [data._id, refreshTrigger]);
+  }, [data._id]);
 
-  // --- Socket.IO: Listen for real-time updates ---
   useEffect(() => {
     socketRef.current = io(SOCKET_URL);
 
-    // Join a room for this employee
     socketRef.current.emit("join", data._id);
 
-    // Listen for taskAssigned event
     socketRef.current.on("taskAssigned", (payload) => {
       if (payload.task.assignedTo === data._id) {
         loadEmployeeData();
@@ -65,7 +62,6 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
       }
     });
 
-    // Listen for taskEdited event
     socketRef.current.on("taskEdited", () => {
       loadEmployeeData();
       addNotification({
@@ -75,7 +71,6 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
       });
     });
 
-    // Listen for taskDeleted event
     socketRef.current.on("taskDeleted", () => {
       loadEmployeeData();
       addNotification({
@@ -85,7 +80,6 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
       });
     });
 
-    // Listen for taskReminder event
     socketRef.current.on("taskReminder", (payload) => {
       addNotification({
         title: "Task Reminder",
@@ -106,6 +100,7 @@ const EmployeeDashboard = ({ changeUser, data, refreshTrigger }) => {
         { status }
       );
       await loadEmployeeData();
+      if (typeof onTaskUpdated === "function") onTaskUpdated();
     } catch (err) {
       console.error("Failed to update task status:", err);
     }

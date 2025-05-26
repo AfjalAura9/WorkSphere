@@ -54,17 +54,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Internal Server Error" });
 });
 
-// Serve React Frontend
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-app.use(express.static(path.join(__dirname, "../client/build")));
-
-// Fix for React Routes (e.g., /login)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-
 // Health check & start
 app.get("/", (req, res) => res.send("API is running…"));
 
