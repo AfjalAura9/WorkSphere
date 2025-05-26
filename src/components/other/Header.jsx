@@ -1,5 +1,5 @@
 import React from "react";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu, FiBell } from "react-icons/fi";
 
 const Header = ({ changeUser, data }) => {
   const logOutUser = () => {
@@ -30,9 +30,10 @@ const Header = ({ changeUser, data }) => {
       {/* Right Section: Notification and Log Out */}
       <div className="flex items-center gap-4">
         {/* Notification Icon */}
-        <button className="text-gray-600 text-xl">
-          <span role="img" aria-label="notification">
-            🔔
+        <button className="text-gray-600 text-xl relative">
+          <FiBell />
+          <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-1">
+            3
           </span>
         </button>
 
