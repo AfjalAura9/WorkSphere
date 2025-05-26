@@ -4,9 +4,19 @@ import Sidebar from "../other/Sidebar";
 
 const Header = ({ changeUser, data, activePage, setActivePage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
+  const [notifications, setNotifications] = useState([
+    "Task 1 is due soon",
+    "New task assigned to you",
+    "Task 3 has been completed",
+  ]); // Example notifications
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false); // State to toggle notification dropdown
 
   const logOutUser = () => {
     if (changeUser) changeUser(null);
+  };
+
+  const toggleNotificationDropdown = () => {
+    setIsNotificationOpen(!isNotificationOpen);
   };
 
   return (
@@ -36,14 +46,41 @@ const Header = ({ changeUser, data, activePage, setActivePage }) => {
         </div>
 
         {/* Right Section: Notification and Log Out */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
           {/* Notification Icon */}
-          <button className="text-gray-600 text-xl relative">
+          <button
+            className="text-gray-600 text-xl relative"
+            onClick={toggleNotificationDropdown}
+          >
             <FiBell />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-1">
-              3
-            </span>
+            {notifications.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-1">
+                {notifications.length}
+              </span>
+            )}
           </button>
+
+          {/* Notification Dropdown */}
+          {isNotificationOpen && (
+            <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg overflow-hidden z-50">
+              <ul className="divide-y divide-gray-200">
+                {notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <li
+                      key={index}
+                      className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      {notification}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-4 py-2 text-sm text-gray-500">
+                    No new notifications
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
 
           {/* Log Out Button (Visible only on larger screens) */}
           <button
