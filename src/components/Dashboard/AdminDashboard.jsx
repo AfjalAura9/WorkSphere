@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Header from "../other/Header";
 import Sidebar from "../other/Sidebar";
 import ManageUsers from "../other/Manageusers";
@@ -10,6 +11,7 @@ const AdminDashboard = (props) => {
   const [activePage, setActivePage] = useState("assign-task");
   const [selectedUser, setSelectedUser] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleBackFromManageUsers = () => setActivePage("assign-task");
   const handleBackFromProfile = () => setSelectedUser(null);
@@ -23,16 +25,34 @@ const AdminDashboard = (props) => {
     setSelectedUser(null); // Reset selected user when switching pages
   };
 
-  
+  const logOutUser = () => {
+    // Clear any user-related data (if applicable)
+    if (props.changeUser) {
+      props.changeUser(null); // Reset the user state in the parent component
+    }
+
+    // Navigate to the login page
+    navigate("/login"); // Use React Router's navigate function
+  };
 
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar activePage={activePage} setActivePage={handleSidebarChange} />
+      <Sidebar
+        activePage={activePage}
+        setActivePage={handleSidebarChange}
+        logOutUser={logOutUser} // Pass logOutUser to Sidebar
+      />
 
       {/* Main Content */}
       <div className="flex-1 bg-white p-4 md:p-7 overflow-y-auto ml-0 md:ml-64">
-        <Header changeUser={props.changeUser} data={props.data} />
+        <Header
+          changeUser={props.changeUser}
+          data={props.data}
+          activePage={activePage}
+          setActivePage={handleSidebarChange}
+          logOutUser={logOutUser} // Pass logOutUser to Header
+        />
         {selectedUser ? (
           <UserProfile
             user={selectedUser}
@@ -49,79 +69,7 @@ const AdminDashboard = (props) => {
                   <h2 className="text-lg md:text-2xl font-bold text-blue-600 mb-4 text-center">
                     Assign New Task
                   </h2>
-                  <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Left Column */}
-                    <div className="grid grid-cols-1 gap-4">
-                      {/* Title */}
-                      <div>
-                        <label className="block text-gray-700 font-medium mb-2">
-                          Title
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Task Title"
-                          className="w-full p-2 border rounded-lg"
-                        />
-                      </div>
-
-                      {/* Due Date */}
-                      <div>
-                        <label className="block text-gray-700 font-medium mb-2">
-                          Due Date
-                        </label>
-                        <input
-                          type="date"
-                          placeholder="dd-mm-yyyy"
-                          className="w-full p-2 border rounded-lg"
-                        />
-                      </div>
-
-                      {/* Category */}
-                      <div>
-                        <label className="block text-gray-700 font-medium mb-2">
-                          Category
-                        </label>
-                        <select className="w-full p-2 border rounded-lg">
-                          <option>Select Category</option>
-                        </select>
-                      </div>
-
-                      {/* Assign To */}
-                      <div>
-                        <label className="block text-gray-700 font-medium mb-2">
-                          Assign To
-                        </label>
-                        <select className="w-full p-2 border rounded-lg">
-                          <option>Select Employee</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Right Column */}
-                    <div className="grid grid-cols-1 gap-4">
-                      {/* Description */}
-                      <div>
-                        <label className="block text-gray-700 font-medium mb-2">
-                          Description
-                        </label>
-                        <textarea
-                          placeholder="Task Description"
-                          className="w-full p-2 border rounded-lg"
-                          rows="6"
-                        ></textarea>
-                      </div>
-
-                      {/* Assign Task Button */}
-                      <div>
-                        <button
-                          type="submit"
-                          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
-                        >
-                          Assign Task
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  <CreateTask />
                 </div>
 
                 {/* Assigned Tasks Section */}

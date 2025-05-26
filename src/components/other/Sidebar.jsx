@@ -28,16 +28,13 @@ const Sidebar = ({
       } md:translate-x-0 transition-transform duration-300 w-64`}
     >
       <div className="flex flex-col h-full pt-8">
-        {/* Navigation Items */}
         <ul className="space-y-4 flex-1">
           {navItems.map((item) => (
             <li
               key={item.key}
               onClick={() => {
-                if (typeof setActivePage === "function") {
-                  setActivePage(item.key); // Call setActivePage only if it's a function
-                }
-                if (setIsOpen) setIsOpen(false); // Close sidebar on mobile after clicking
+                setActivePage(item.key);
+                setIsOpen(false); // Close sidebar on mobile after clicking
               }}
               className={`flex items-center gap-4 px-4 py-3 cursor-pointer rounded-lg transition ${
                 activePage === item.key ? "bg-blue-500" : "hover:bg-gray-700"
@@ -50,7 +47,7 @@ const Sidebar = ({
         </ul>
 
         {/* Log Out Button (Visible only in Sidebar on small screens) */}
-        <div className="p-4">
+        <div className="p-4 md:hidden">
           <button
             onClick={logOutUser}
             className="w-full bg-red-500 text-white text-sm py-2 px-4 rounded-lg hover:bg-red-600 transition"
