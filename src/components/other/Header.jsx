@@ -17,13 +17,11 @@ const Header = ({
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-4 bg-white shadow">
         <div className="flex items-center">
-          <img src="/Logo.png" alt="Logo" className="h-10 w-10 mr-2" />
-          <span className="text-xl font-bold text-blue-700">WorkSphere</span>
-        </div>
-        <div className="flex items-center">
-          <span className="mr-4 text-gray-700 font-semibold">
+          <span className="text-xl font-bold text-blue-700">
             Hello, {data?.firstName || "User"}
           </span>
+        </div>
+        <div className="flex items-center">
           {/* Notification Bell */}
           <NotificationBell />
 

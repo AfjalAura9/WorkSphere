@@ -69,10 +69,7 @@ const AdminDashboard = ({ changeUser, data, ...props }) => {
             {activePage === "assign-task" && (
               <>
                 {/* Assign New Task Section */}
-                <div className="bg-blue-100 p-4 md:p-8 rounded-lg shadow-md mb-8">
-                  <h2 className="text-lg md:text-2xl font-bold text-blue-600 mb-4 text-center">
-                    Assign New Task
-                  </h2>
+                <div className="bg-blue-100 p-4 md:p-8 rounded-lg shadow-md mb-8"> 
                   <CreateTask />
                 </div>
 
