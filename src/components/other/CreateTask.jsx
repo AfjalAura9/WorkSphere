@@ -51,15 +51,18 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="w-full min-h-[500px] mx-auto mt-10 mb-12 bg-white rounded-lg shadow-md p-8 flex flex-col">
-      <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
+    <div className="w-full max-w-3xl mx-auto mt-10 mb-12 bg-white rounded-2xl shadow-2xl p-10 flex flex-col">
+      <h2 className="text-3xl font-extrabold text-blue-900 mb-8 text-center tracking-wide">
         Assign New Task
       </h2>
-      <form onSubmit={submitHandler} className="flex flex-1 gap-8">
+      <form
+        onSubmit={submitHandler}
+        className="flex flex-col md:flex-row gap-10"
+      >
         {/* Left Side: Fields */}
-        <div className="flex flex-col gap-6 w-full max-w-xs">
+        <div className="flex flex-col gap-7 w-full md:w-1/2">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-base font-semibold text-gray-700 mb-2">
               Title
             </label>
             <input
@@ -67,13 +70,13 @@ const CreateTask = () => {
               name="title"
               value={formState.title}
               onChange={handleChange}
+              className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition text-lg"
               placeholder="Task Title"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-base font-semibold text-gray-700 mb-2">
               Due Date
             </label>
             <input
@@ -81,19 +84,19 @@ const CreateTask = () => {
               name="dueDate"
               value={formState.dueDate}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition text-lg"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-base font-semibold text-gray-700 mb-2">
               Category
             </label>
             <select
               name="category"
               value={formState.category}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition text-lg"
               required
             >
               <option value="">Select Category</option>
@@ -105,14 +108,14 @@ const CreateTask = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-base font-semibold text-gray-700 mb-2">
               Assign To
             </label>
             <select
               name="assignedTo"
               value={formState.assignedTo}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition text-lg"
               required
             >
               <option value="">Select Employee</option>
@@ -126,7 +129,7 @@ const CreateTask = () => {
         </div>
         {/* Right Side: Description */}
         <div className="flex-1 flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-base font-semibold text-gray-700 mb-2">
             Description
           </label>
           <textarea
@@ -134,10 +137,9 @@ const CreateTask = () => {
             value={formState.description}
             onChange={handleChange}
             placeholder="Task Description"
-            className="w-full h-full min-h-[220px] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition resize-none"
+            className="w-full h-full min-h-[220px] px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 transition text-lg resize-none"
             required
           />
-          <div className="flex-1" />
           <div className="mt-6 flex flex-col gap-2">
             {successMsg && (
               <div className="text-green-600 font-semibold text-center">

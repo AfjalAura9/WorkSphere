@@ -37,26 +37,19 @@ const AdminDashboard = ({ changeUser, data, ...props }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-gray-100">
+      <Header
+        changeUser={changeUser}
+        data={data}
+        onHamburgerClick={() => setSidebarOpen(true)}
+      />
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        activePage={activePage}
-        setActivePage={handleSidebarChange}
-        logOutUser={logOutUser} // Pass logOutUser to Sidebar
+        changeUser={changeUser}
       />
-
       {/* Main Content */}
       <div className="flex-1 bg-white p-4 md:p-7 overflow-y-auto ml-0 md:ml-64">
-        <Header
-          changeUser={changeUser}
-          data={data}
-          activePage={activePage}
-          setActivePage={handleSidebarChange}
-          logOutUser={logOutUser} // Pass logOutUser to Header
-          onHamburgerClick={() => setSidebarOpen(true)}
-        />
         {selectedUser ? (
           <UserProfile
             user={selectedUser}
@@ -69,7 +62,7 @@ const AdminDashboard = ({ changeUser, data, ...props }) => {
             {activePage === "assign-task" && (
               <>
                 {/* Assign New Task Section */}
-                <div className="bg-blue-100 p-4 md:p-8 rounded-lg shadow-md mb-8"> 
+                <div className="bg-blue-100 p-4 md:p-8 rounded-lg shadow-md mb-8">
                   <CreateTask />
                 </div>
 
