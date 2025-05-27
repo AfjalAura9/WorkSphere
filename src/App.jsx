@@ -17,12 +17,19 @@ const App = () => {
     return stored ? JSON.parse(stored) : { firstName: "Admin" };
   });
 
+  const navigate = useNavigate();
+
   const handleLogin = (role, userData) => {
     setUser(role);
     setIsAdmin(role === "admin");
     setLoggedInUserData(userData);
     localStorage.setItem("userRole", role);
     localStorage.setItem("loggedInUserData", JSON.stringify(userData));
+    if (role === "admin") {
+      navigate("/dashboard/admin");
+    } else {
+      navigate("/dashboard/employee");
+    }
   };
 
   const handleLogout = () => {
@@ -32,6 +39,7 @@ const App = () => {
     localStorage.removeItem("userRole");
     localStorage.removeItem("loggedInUserData");
     localStorage.removeItem("notifications");
+    navigate("/login");
   };
 
   useEffect(() => {
