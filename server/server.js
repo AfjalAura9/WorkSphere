@@ -12,12 +12,26 @@ import { fileURLToPath } from "url";
 const app = express();
 const server = http.createServer(app);
 
-// --- Socket.IO setup ---
+// Place CORS middleware at the very top, before any routes or other middleware
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://worksphere-peach.vercel.app",
+      "https://worksphere-2.onrender.com",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
+// Enable CORS for Socket.IO
 const io = new Server(server, {
   cors: {
     origin: [
       "https://worksphere-peach.vercel.app", // <-- no trailing slash
       "https://worksphere-2.onrender.com",
+      "http://localhost:5173", // allow your frontend origin
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -26,16 +40,6 @@ const io = new Server(server, {
 app.set("io", io); // Make io available in routes
 
 // Middleware
-app.use(
-  cors({
-    origin: [
-      "https://worksphere-peach.vercel.app", // your Vercel frontend
-      "https://worksphere-2.onrender.com", // your backend (optional, for testing)
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
 app.use(express.json());
 
 // Connect to MongoDB
@@ -47,6 +51,11 @@ mongoose
 // Routes
 app.use("/api/employees", employeeRoutes);
 app.use("/api/tasks", taskRoutes);
+
+// Test route for CORS
+app.get("/cors-test", (req, res) => {
+  res.json({ message: "CORS is working!" });
+});
 
 // Global error handler
 app.use((err, req, res, next) => {
