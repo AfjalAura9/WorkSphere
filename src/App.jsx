@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import EmployeeDashboard from "./components/Dashboard/EmployeeDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
@@ -25,10 +25,11 @@ const App = () => {
     setLoggedInUserData(userData);
     localStorage.setItem("userRole", role);
     localStorage.setItem("loggedInUserData", JSON.stringify(userData));
+    // Redirect after login
     if (role === "admin") {
-      navigate("/dashboard/admin");
+      navigate("/dashboard/admin", { replace: true });
     } else {
-      navigate("/dashboard/employee");
+      navigate("/dashboard/employee", { replace: true });
     }
   };
 
@@ -39,7 +40,7 @@ const App = () => {
     localStorage.removeItem("userRole");
     localStorage.removeItem("loggedInUserData");
     localStorage.removeItem("notifications");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   useEffect(() => {
@@ -54,42 +55,51 @@ const App = () => {
     return () => window.removeEventListener("storage", syncLogout);
   }, []);
 
+  // Route protection
+  const RequireAuth = ({ children, role }) => {
+    if (!user) return <Navigate to="/login" replace />;
+    if (role && user !== role) return <Navigate to="/login" replace />;
+    return children;
+  };
+
   return (
     <NotificationProvider>
       <Routes>
         <Route
           path="/login"
           element={
-            !user ? (
-              <Login
-                handleLogin={handleLogin}
-                setIsAdmin={setIsAdmin}
-                isAdmin={isAdmin}
-              />
-            ) : user === "admin" ? (
+            <Login
+              handleLogin={handleLogin}
+              setIsAdmin={setIsAdmin}
+              isAdmin={isAdmin}
+            />
+          }
+        />
+        <Route
+          path="/dashboard/admin"
+          element={
+            <RequireAuth role="admin">
               <AdminDashboard
                 changeUser={handleLogout}
                 data={loggedInUserData}
                 onTaskUpdated={noop}
               />
-            ) : (
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard/employee"
+          element={
+            <RequireAuth role="employee">
               <EmployeeDashboard
                 changeUser={handleLogout}
                 data={loggedInUserData}
                 onTaskUpdated={noop}
               />
-            )
+            </RequireAuth>
           }
         />
-        <Route
-          path="/dashboard/admin"
-          element={<AdminDashboard onTaskUpdated={noop} />}
-        />
-        <Route
-          path="/dashboard/employee"
-          element={<EmployeeDashboard onTaskUpdated={noop} />}
-        />
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </NotificationProvider>
   );
