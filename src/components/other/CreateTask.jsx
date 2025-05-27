@@ -51,7 +51,7 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-10 mb-12 bg-white rounded-2xl shadow-2xl p-10 flex flex-col">
+    <div className="w-full mx-auto mt-10 mb-12 bg-white rounded-2xl shadow-2xl p-10 flex flex-col">
       <h2 className="text-3xl font-extrabold text-blue-900 mb-8 text-center tracking-wide">
         Assign New Task
       </h2>
