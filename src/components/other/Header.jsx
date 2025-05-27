@@ -28,12 +28,12 @@ const Header = ({
           <NotificationBell />
 
           {/* Log Out Button (Visible only on larger screens) */}
-          <button
+          {/* <button
             onClick={logOutUser} // Connect logOutUser function
             className="hidden md:inline-block bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded ml-4"
           >
             Logout
-          </button>
+          </button> */}
 
           {/* Hamburger Menu */}
           <button
