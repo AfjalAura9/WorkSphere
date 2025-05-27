@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin = () => {}, setIsAdmin, isAdmin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userData] = useContext(AuthContext); // Access employee data from AuthContext
