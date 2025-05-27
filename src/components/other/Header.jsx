@@ -15,34 +15,33 @@ const Header = ({
   return (
     <>
       {/* Header */}
-      <header className="flex items-center justify-between bg-white shadow-md p-4 md:p-6 rounded-lg mb-4">
-        {/* Left Section: Greeting */}
-        <div className="flex items-center gap-4">
-          <h1 className="text-lg md:text-xl font-bold text-gray-800">
-            Hello,{" "}
-            <span className="text-blue-600">{data?.name || "Admin"}</span>
-          </h1>
+      <header className="flex items-center justify-between px-6 py-4 bg-white shadow">
+        <div className="flex items-center">
+          <img src="/Logo.png" alt="Logo" className="h-10 w-10 mr-2" />
+          <span className="text-xl font-bold text-blue-700">WorkSphere</span>
         </div>
-
-        {/* Right Section: Hamburger Menu and Notification */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
+          <span className="mr-4 text-gray-700 font-semibold">
+            Hello, {data?.firstName || "User"}
+          </span>
           {/* Notification Bell */}
           <NotificationBell />
 
           {/* Log Out Button (Visible only on larger screens) */}
           <button
             onClick={logOutUser} // Connect logOutUser function
-            className="hidden md:block bg-red-500 text-white text-sm md:text-base py-2 px-4 rounded-lg hover:bg-red-600 transition"
+            className="hidden md:inline-block bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded ml-4"
           >
-            Log Out
+            Logout
           </button>
 
           {/* Hamburger Menu */}
           <button
-            className="text-gray-600 text-2xl md:hidden"
+            className="md:hidden p-2 rounded hover:bg-gray-100"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            aria-label="Open menu"
           >
-            <FiMenu />
+            <FiMenu className="h-6 w-6" />
           </button>
         </div>
       </header>

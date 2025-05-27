@@ -7,10 +7,11 @@ import CreateTask from "../other/CreateTask";
 import AllTask from "../other/AllTask";
 import UserProfile from "../UserProfile/UserProfile";
 
-const AdminDashboard = (props) => {
+const AdminDashboard = ({ changeUser, data, ...props }) => {
   const [activePage, setActivePage] = useState("assign-task");
   const [selectedUser, setSelectedUser] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleBackFromManageUsers = () => setActivePage("assign-task");
@@ -27,8 +28,8 @@ const AdminDashboard = (props) => {
 
   const logOutUser = () => {
     // Clear any user-related data (if applicable)
-    if (props.changeUser) {
-      props.changeUser(null); // Reset the user state in the parent component
+    if (changeUser) {
+      changeUser(null); // Reset the user state in the parent component
     }
 
     // Navigate to the login page
@@ -36,9 +37,11 @@ const AdminDashboard = (props) => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
       <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
         activePage={activePage}
         setActivePage={handleSidebarChange}
         logOutUser={logOutUser} // Pass logOutUser to Sidebar
@@ -47,11 +50,12 @@ const AdminDashboard = (props) => {
       {/* Main Content */}
       <div className="flex-1 bg-white p-4 md:p-7 overflow-y-auto ml-0 md:ml-64">
         <Header
-          changeUser={props.changeUser}
-          data={props.data}
+          changeUser={changeUser}
+          data={data}
           activePage={activePage}
           setActivePage={handleSidebarChange}
           logOutUser={logOutUser} // Pass logOutUser to Header
+          onHamburgerClick={() => setSidebarOpen(true)}
         />
         {selectedUser ? (
           <UserProfile
