@@ -4,6 +4,7 @@ import Login from "./components/Auth/Login";
 import EmployeeDashboard from "./components/Dashboard/EmployeeDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import { NotificationProvider } from "./context/NotificationContext";
+import EditAdminProfile from "./components/UserProfile/EditAdminProfile";
 
 const noop = () => {};
 
@@ -97,6 +98,21 @@ const App = () => {
                 onTaskUpdated={noop}
               />
             </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard/admin/profile"
+          element={
+            <EditAdminProfile
+              adminData={loggedInUserData}
+              onSave={(updated) => {
+                // Save logic here (API call or local update)
+                // Optionally update localStorage and redirect back
+                alert("Profile updated!");
+                navigate("/dashboard/admin");
+              }}
+              onCancel={() => navigate("/dashboard/admin")}
+            />
           }
         />
         <Route path="*" element={<Navigate to="/login" replace />} />

@@ -7,6 +7,7 @@ import Employee from "../models/Employee.js";
 const router = express.Router();
 
 // Assign a new task
+console.log("Assign Task API called");
 router.post("/assign", async (req, res) => {
   try {
     const { title, description, assignedTo, dueDate, category } = req.body;
@@ -41,10 +42,12 @@ router.post("/assign", async (req, res) => {
     const io = req.app.get("io");
     if (io) {
       io.to(assignedTo).emit("taskAssigned", { task });
+      io.emit("taskAssigned", { task }); // <-- Add this line for admin dashboards
     }
 
     res.status(201).json(task);
   } catch (err) {
+    console.error("Assign Task error:", err); // <-- Add this line
     res
       .status(500)
       .json({ error: "Failed to assign task", details: err.message });

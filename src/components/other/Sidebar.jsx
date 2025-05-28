@@ -1,13 +1,7 @@
 import React from "react";
-import { FiUserPlus, FiClipboard, FiLogOut, FiX } from "react-icons/fi";
+import { FiUserPlus, FiClipboard, FiX } from "react-icons/fi";
 
-const Sidebar = ({
-  activePage,
-  setActivePage,
-  isOpen,
-  setIsOpen,
-  logOutUser,
-}) => {
+const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
   const navItems = [
     {
       label: "Assign Task",
@@ -65,15 +59,6 @@ const Sidebar = ({
               </li>
             ))}
           </ul>
-          <div className="p-5">
-            <button
-              onClick={logOutUser}
-              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow transition"
-            >
-              <FiLogOut size={18} />
-              Log Out
-            </button>
-          </div>
         </div>
       </aside>
     </>

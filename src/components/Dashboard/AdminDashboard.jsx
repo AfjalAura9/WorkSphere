@@ -1,17 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../other/Header";
 import Sidebar from "../other/Sidebar";
 import ManageUsers from "../other/Manageusers";
 import CreateTask from "../other/CreateTask";
 import AllTask from "../other/AllTask";
 import UserProfile from "../UserProfile/UserProfile";
+import { io } from "socket.io-client";
+
+const SOCKET_URL = import.meta.env.VITE_API_URL;
 
 const AdminDashboard = ({ changeUser, data, ...props }) => {
   const [activePage, setActivePage] = useState("assign-task");
   const [selectedUser, setSelectedUser] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  // Sidebar is always open on desktop, togglable on mobile
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const socketRef = useRef(null);
+
+  // Listen for task events for live updates
+  useEffect(() => {
+    socketRef.current = io(SOCKET_URL, { transports: ["websocket"] });
+
+    // Refresh assigned tasks on relevant events
+    const refresh = () => setRefreshTrigger((v) => v + 1);
+
+    socketRef.current.on("taskAssigned", refresh);
+    socketRef.current.on("taskStatusUpdated", refresh);
+    socketRef.current.on("taskEdited", refresh);
+    socketRef.current.on("taskDeleted", refresh);
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
 
   const handleBackFromManageUsers = () => setActivePage("assign-task");
   const handleBackFromProfile = () => setSelectedUser(null);
@@ -58,7 +79,7 @@ const AdminDashboard = ({ changeUser, data, ...props }) => {
                     <h2 className="text-lg md:text-2xl font-bold text-blue-600 mb-4 text-center">
                       Assign New Task
                     </h2>
-                    <CreateTask />
+                    <CreateTask onTaskAssigned={handleTaskChange} />
                   </div>
                   <div className="bg-white p-4 md:p-8 rounded-lg shadow-md">
                     <h2 className="text-lg md:text-2xl font-bold text-blue-600 text-center">

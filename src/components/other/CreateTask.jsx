@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthProvider";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const CATEGORY_OPTIONS = [
@@ -12,8 +11,7 @@ const CATEGORY_OPTIONS = [
   "Other",
 ];
 
-const CreateTask = () => {
-  const [userData] = useContext(AuthContext);
+const CreateTask = ({ onTaskAssigned }) => {
   const [formState, setFormState] = useState({
     title: "",
     description: "",
@@ -21,8 +19,19 @@ const CreateTask = () => {
     category: "",
     assignedTo: "",
   });
+  const [employees, setEmployees] = useState([]);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/employees`
+      );
+      setEmployees(res.data);
+    };
+    fetchEmployees();
+  }, []);
 
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -32,7 +41,11 @@ const CreateTask = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("Submit handler called", formState);
+    setSuccessMsg("");
+    setErrorMsg("");
     try {
+      console.log("Assign Task API called", formState);
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/tasks/assign`,
         formState
@@ -45,14 +58,20 @@ const CreateTask = () => {
         category: "",
         assignedTo: "",
       });
+      if (onTaskAssigned) onTaskAssigned(); // <-- triggers refresh in AdminDashboard
     } catch (err) {
+      console.error("Assign Task error:", err);
       setErrorMsg("Failed to assign task. Please check all fields.");
     }
   };
 
   return (
     <div className="w-full min-h-[500px] mx-auto mt-6 mb-12 bg-white rounded-lg shadow-md p-8 flex flex-col">
-      <form onSubmit={submitHandler} className="flex flex-1 gap-8">
+      {/* Change flex direction to column on mobile, row on md+ */}
+      <form
+        onSubmit={submitHandler}
+        className="flex flex-col md:flex-row flex-1 gap-8"
+      >
         {/* Left Side: Fields */}
         <div className="flex flex-col gap-6 w-full max-w-xs">
           <div>
@@ -113,7 +132,7 @@ const CreateTask = () => {
               required
             >
               <option value="">Select Employee</option>
-              {userData.map((user) => (
+              {employees.map((user) => (
                 <option key={user._id || user.id} value={user._id || user.id}>
                   {user.firstName} {user.lastName} ({user.email})
                 </option>
@@ -146,16 +165,15 @@ const CreateTask = () => {
                 {errorMsg}
               </div>
             )}
-           
           </div>
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow transition duration-300 w-full"
+          >
+            Assign Task
+          </button>
         </div>
       </form>
-       <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow transition duration-300 w-full"
-            >
-              Assign Task
-            </button>
     </div>
   );
 };
