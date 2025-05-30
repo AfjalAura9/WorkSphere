@@ -232,6 +232,7 @@ worksphere/
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
+Read [Contribution Rules](./CONTRIBUTION.MD) 
 
 1. Fork the repository.
 2. Create a new branch:
@@ -252,8 +253,8 @@ Contributions are welcome! Please follow these steps:
 
 ## 📝 License
 
-This project is licensed under the **MIT License**.  
-See the [LICENSE](./LICENSE) file for details.
+This project is licensed under the **Proprietary License**.  
+See the [Proprietary License](./LICENSE) file for details.
 
 ---
 
