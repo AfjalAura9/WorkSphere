@@ -2,6 +2,7 @@ import "dotenv/config.js";
 import express from "express";
 import cors from "cors";
 import employeeRoutes from "./routes/employeeRoutes.js";
+import adminRoutes from "./routes/admin.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import http from "http";
 import mongoose from "mongoose";
@@ -22,6 +23,10 @@ app.use(
   })
 );
 
+// FIX: Increase body size limit for large payloads (e.g., base64 images)
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
 const io = new Server(server, {
   cors: {
     origin: [
@@ -35,8 +40,6 @@ const io = new Server(server, {
 });
 app.set("io", io);
 
-app.use(express.json());
-
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -44,6 +47,7 @@ mongoose
 
 app.use("/api/employees", employeeRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => res.send("API is running…"));
 
@@ -63,4 +67,11 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () =>
   console.log(`🚀 Server listening on http://localhost:${PORT}`)
+);
+mongoose.connect(
+  process.env.MONGO_URI || "mongodb://localhost:27017/worksphere",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
 );

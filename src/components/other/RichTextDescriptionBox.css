@@ -1,0 +1,43 @@
+.custom-quill-container {
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  padding: 0;
+  overflow: hidden;
+}
+
+.custom-quill-editor .ql-toolbar {
+  border-radius: 18px 18px 0 0;
+  background: #f8fafc;
+  border: none;
+  padding: 8px 12px;
+}
+
+.custom-quill-editor .ql-container {
+  border-radius: 0 0 18px 18px;
+  border: none;
+  font-size: 1.1rem;
+  min-height: 180px;
+  max-height: 220px;
+  height: 220px;
+  padding: 12px;
+  font-family: inherit;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.custom-quill-editor .ql-editor {
+  min-height: 150px;
+  max-height: 196px;
+  height: 196px;
+  font-family: inherit;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.custom-quill-editor .ql-toolbar button,
+.custom-quill-editor .ql-toolbar .ql-picker {
+  margin-right: 4px;
+}

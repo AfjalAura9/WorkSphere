@@ -7,7 +7,13 @@ import EditAdminProfileModal from "../UserProfile/EditAdminProfile";
 import ProfileMenuDropdown from "../UserProfile/ProfileMenuDropdown";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ data, onHamburgerClick, adminData, logOutUser }) => {
+const Header = ({
+  data,
+  onHamburgerClick,
+  adminData,
+  setAdminData,
+  logOutUser,
+}) => {
   const navigate = useNavigate();
   const { notifications, markAllRead } = useContext(NotificationContext);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -44,12 +50,14 @@ const Header = ({ data, onHamburgerClick, adminData, logOutUser }) => {
   // User data for profile menu
   const userData = {
     firstName: adminData?.firstName || "Your name",
+    lastName: adminData?.lastName || "",
     email: adminData?.email || "yourname@gmail.com",
     profilePic: adminData?.profilePic || "/default-profile.png",
+    _id: adminData?._id || "",
   };
 
   return (
-    <header className="bg-white shadow flex items-center justify-between px-6 py-4 transition-all duration-300">
+    <header className="sticky top-0 z-20 bg-white shadow flex items-center justify-between px-6 py-4 transition-all duration-300">
       {/* Left: Hamburger (mobile) + Hello */}
       <div className="flex items-center gap-4">
         <button
@@ -59,7 +67,7 @@ const Header = ({ data, onHamburgerClick, adminData, logOutUser }) => {
         >
           <FiMenu className="h-7 w-7 text-blue-800" />
         </button>
-        <span className="text-lg md:text-xl font-semibold text-blue-900">
+        <span className="text-xl md:text-2xl font-bold text-blue-900">
           Hello,{" "}
           <span className="text-blue-600">{data?.firstName || "Admin"}</span>
         </span>
@@ -76,7 +84,7 @@ const Header = ({ data, onHamburgerClick, adminData, logOutUser }) => {
               markAllRead();
             }}
           >
-            <IoNotificationsOutline className="h-6 w-6 text-gray-700" />
+            <IoNotificationsOutline className="h-7 w-7 text-gray-700" />
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5">
                 {unreadCount}
@@ -121,7 +129,11 @@ const Header = ({ data, onHamburgerClick, adminData, logOutUser }) => {
             aria-label="Profile"
             onClick={() => setShowProfileMenu((v) => !v)}
           >
-            <FaUserCircle className="h-7 w-7 text-gray-700" />
+            <img
+              src={userData.profilePic}
+              alt="Profile"
+              className="h-9 w-9 rounded-full object-cover border"
+            />
           </button>
           {showProfileMenu && (
             <ProfileMenuDropdown
@@ -149,6 +161,10 @@ const Header = ({ data, onHamburgerClick, adminData, logOutUser }) => {
         isOpen={showProfileModal}
         onClose={() => setShowProfileModal(false)}
         adminData={adminData}
+        onSave={(updated) => {
+          setAdminData(updated); // <-- THIS UPDATES THE STATE
+          setShowProfileModal(false);
+        }}
         onBack={() => {
           setShowProfileModal(false);
           setShowProfileMenu(true);

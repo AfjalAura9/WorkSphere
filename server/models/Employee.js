@@ -5,9 +5,9 @@ const employeeSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }], // Reference to tasks
+  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
   taskCounts: {
-    newTask: { type: Number, default: 0 },
+    new: { type: Number, default: 0 }, // <-- use "new"
     active: { type: Number, default: 0 },
     completed: { type: Number, default: 0 },
     failed: { type: Number, default: 0 },

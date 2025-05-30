@@ -1,7 +1,21 @@
-import React from "react";
-import { FiUserPlus, FiClipboard, FiX } from "react-icons/fi";
+import React, { useRef } from "react";
+import {
+  FiUserPlus,
+  FiClipboard,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
-const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
+const Sidebar = ({
+  activePage,
+  setActivePage,
+  isOpen,
+  setIsOpen,
+  sidebarWidth,
+  setSidebarWidth,
+  defaultWidth = 192,
+  collapsedWidth = 64,
+}) => {
   const navItems = [
     {
       label: "Assign Task",
@@ -15,6 +29,40 @@ const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
     },
   ];
 
+  const dragging = useRef(false);
+
+  const handleMouseDown = (e) => {
+    dragging.current = true;
+    document.body.style.cursor = "ew-resize";
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e) => {
+    if (dragging.current) {
+      const newWidth = Math.max(collapsedWidth, Math.min(320, e.clientX));
+      setSidebarWidth(newWidth);
+      setIsOpen(newWidth > (defaultWidth + collapsedWidth) / 2);
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (dragging.current) {
+      dragging.current = false;
+      document.body.style.cursor = "";
+    }
+  };
+
+  React.useEffect(() => {
+    if (dragging.current) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  });
+
   return (
     <>
       {/* Overlay for mobile */}
@@ -26,40 +74,62 @@ const Sidebar = ({ activePage, setActivePage, isOpen, setIsOpen }) => {
         aria-label="Close sidebar overlay"
       ></div>
       <aside
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-blue-800 to-blue-900 z-40 transform
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0 transition-transform duration-300 w-48 shadow-2xl`}
+        className={`
+          fixed top-0 left-0 h-full bg-gradient-to-b from-gray-800 to-gray-900 z-40
+          transition-all duration-300 shadow-2xl flex flex-col
+        `}
+        style={{
+          width: sidebarWidth,
+          minWidth: collapsedWidth,
+          maxWidth: 320,
+        }}
       >
-        <div className="flex flex-col h-full pt-6">
-          {/* Close button for mobile */}
-          <div className="flex justify-end md:hidden px-4">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-gray-300 hover:text-white transition"
-              aria-label="Close sidebar"
+        {/* Navigation Items at the top, left-aligned */}
+        <ul className="mt-6 flex flex-col items-start space-y-2">
+          {navItems.map((item) => (
+            <li
+              key={item.key}
+              onClick={() => setActivePage(item.key)}
+              title={item.label}
+              className={`
+                flex items-center w-full cursor-pointer font-semibold text-lg transition-all duration-200 whitespace-nowrap
+                ${
+                  activePage === item.key
+                    ? "bg-blue-600 text-white shadow"
+                    : "text-blue-100 hover:bg-blue-100 hover:text-blue-800"
+                }
+                ${isOpen ? "px-3 py-3 gap-3" : "p-3 justify-center"}
+              `}
+              style={{ userSelect: "none" }}
             >
-              <FiX size={24} />
+              <span className="flex items-center">{item.icon}</span>
+              {isOpen && <span className="ml-3">{item.label}</span>}
+            </li>
+          ))}
+        </ul>
+        {/* Collapse/Expand Button at the bottom, centered in a box */}
+        <div className="mt-auto flex justify-center items-center pb-4">
+          <div className="bg-white shadow px-2 py-2 flex items-center">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-blue-700 hover:text-blue-900 transition"
+              aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+              style={{ outline: "none", display: "flex", alignItems: "center" }}
+            >
+              {isOpen ? (
+                <FiChevronLeft size={24} />
+              ) : (
+                <FiChevronRight size={24} />
+              )}
             </button>
           </div>
-          <ul className="space-y-2 flex-1 mt-2">
-            {navItems.map((item) => (
-              <li
-                key={item.key}
-                onClick={() => setActivePage(item.key)}
-                className={`flex items-center gap-3 px-5 py-3 cursor-pointer rounded-lg font-medium text-base transition-all duration-200
-                  ${
-                    activePage === item.key
-                      ? "bg-blue-600 text-white shadow border-l-4 border-blue-300"
-                      : "text-blue-200 hover:bg-blue-700 hover:text-white"
-                  }
-                `}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </li>
-            ))}
-          </ul>
         </div>
+        {/* Drag handle */}
+        <div
+          className="absolute top-0 right-0 h-full w-3 cursor-ew-resize z-50"
+          onMouseDown={handleMouseDown}
+          style={{ background: "transparent" }}
+        ></div>
       </aside>
     </>
   );

@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import axios from "axios";
 
 const EditAdminProfileModal = ({
   isOpen,
@@ -15,11 +16,27 @@ const EditAdminProfileModal = ({
     position: adminData?.position || "",
     location: adminData?.location || "",
     profilePic: adminData?.profilePic || "",
+    _id: adminData?._id || adminData?.id || "",
   });
   const [preview, setPreview] = useState(adminData?.profilePic || "");
   const fileInputRef = useRef();
 
-  if (!isOpen) return null;
+  // Sync form with adminData when modal opens or adminData changes
+  useEffect(() => {
+    setForm({
+      firstName: adminData?.firstName || "",
+      lastName: adminData?.lastName || "",
+      email: adminData?.email || "",
+      phone: adminData?.phone || "",
+      position: adminData?.position || "",
+      location: adminData?.location || "",
+      profilePic: adminData?.profilePic || "",
+      _id: adminData?._id || adminData?.id || "",
+    });
+    setPreview(adminData?.profilePic || "");
+  }, [adminData, isOpen]);
+
+  if (!isOpen || !adminData) return null;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,14 +45,30 @@ const EditAdminProfileModal = ({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setForm({ ...form, profilePic: file });
-      setPreview(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm((prev) => ({ ...prev, profilePic: reader.result }));
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (onSave) onSave(form);
+    if (!form._id) {
+      alert("Admin ID is missing. Cannot update profile.");
+      return;
+    }
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/admin/profile/${form._id}`,
+        form
+      );
+      if (onSave) onSave(res.data); // Update parent state with latest data from DB
+    } catch (err) {
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   return (

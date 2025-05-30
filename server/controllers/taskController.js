@@ -3,7 +3,7 @@ const mongoose = require("mongoose"); // 🟢 Add this at the top if not already
 // Assign a new task
 exports.createTask = async (req, res) => {
   try {
-    const { title, description, assignedTo, dueDate, category } = req.body;
+    const { heading, description, assignedTo, dueDate, category } = req.body;
 
     // 🛡️ Validate assignedTo
     if (!assignedTo || !mongoose.Types.ObjectId.isValid(assignedTo)) {
@@ -13,11 +13,12 @@ exports.createTask = async (req, res) => {
     }
 
     const newTask = new Task({
-      title,
+      heading,
       description,
       assignedTo,
       dueDate,
       category,
+      status: "new",
     });
     const saved = await newTask.save();
     res.status(201).json(saved);

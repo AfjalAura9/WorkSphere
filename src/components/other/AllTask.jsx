@@ -31,7 +31,7 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
   return (
     <div className="p-6 rounded-lg mt-6 shadow-lg border-2 border-gray-300">
       {/* Table Header */}
-      <div className="hidden md:grid grid-cols-5 gap-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-sm py-3 px-4 rounded-lg mb-4">
+      <div className="hidden md:grid grid-cols-5 gap-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-base py-3 px-4 rounded-lg mb-4">
         <h2 className="text-center">Employee Name</h2>
         <h3 className="text-center">New</h3>
         <h3 className="text-center">Active</h3>
@@ -57,17 +57,17 @@ const AllTask = ({ onUserClick, refreshTrigger }) => {
               <div className="flex md:hidden justify-between w-full text-gray-400">
                 <span>New:</span>
                 <span className="text-blue-400 font-semibold">
-                  {user.taskCounts.newTask || 0}
+                  {user.tasks ? user.tasks.filter((t) => t.status === "new").length : 0}
                 </span>
               </div>
               <div className="hidden md:block text-center text-blue-400 font-semibold">
-                {user.taskCounts.newTask || 0}
+                  {user.tasks ? user.tasks.filter((t) => t.status === "active").length : 0}
               </div>
 
               <div className="flex md:hidden justify-between w-full text-gray-400">
                 <span>Active:</span>
                 <span className="text-yellow-400 font-semibold">
-                  {user.taskCounts.active || 0}
+                  {user.tasks ? user.tasks.filter((t) => t.status === "completed").length : 0}
                 </span>
               </div>
               <div className="hidden md:block text-center text-yellow-400 font-semibold">

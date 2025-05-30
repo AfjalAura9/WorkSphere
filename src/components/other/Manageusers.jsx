@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import Modal from "../common/Modal";
 import ConfirmModal from "../common/ConfirmModal";
+import { FiEdit2 } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -55,7 +57,7 @@ const ManageUsers = ({ onBack }) => {
         password: "123",
         taskCounts: {
           active: 0,
-          newTask: 0,
+          new: 0,
           completed: 0,
           failed: 0,
         },
@@ -64,7 +66,7 @@ const ManageUsers = ({ onBack }) => {
       await refreshUsers();
       resetForm();
     } catch (err) {
-      setErrorMessage("Failed to add user.");
+      setErrorMessage("Failed to add employee.");
     }
   };
 
@@ -117,25 +119,21 @@ const ManageUsers = ({ onBack }) => {
   });
 
   return (
-    <div className="p-8 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 min-h-screen rounded-lg shadow-lg">
-      <button
-        className="mb-6 text-blue-600 hover:underline font-semibold text-lg"
-        onClick={onBack}
-      >
-        ← Back
-      </button>
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-10">
-        <h2 className="text-2xl font-bold mb-6 text-blue-700 flex items-center gap-2">
-          <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-base">
-            Add User
-          </span>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 px-0 py-8 md:px-0 flex flex-col items-center">
+      {/* Add employee Card */}
+      <div className="w-full max-w-7xl bg-white rounded-lg shadow-lg p-4 md:p-8 mb-8 border border-blue-100">
+        <h2 className="text-2xl md:text-3xl font-bold text-blue-700 mb-2 text-left">
+          Add an Employee
         </h2>
+        <p className="text-gray-500 mb-6 text-sm">
+          Fill in the details below to add a new employee.
+        </p>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleAddUser();
           }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2"
         >
           <input
             type="text"
@@ -143,7 +141,7 @@ const ManageUsers = ({ onBack }) => {
             value={formState.firstName}
             onChange={handleChange}
             placeholder="First Name"
-            className="border border-blue-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
             required
           />
           <input
@@ -152,7 +150,7 @@ const ManageUsers = ({ onBack }) => {
             value={formState.lastName}
             onChange={handleChange}
             placeholder="Last Name"
-            className="border border-blue-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
             required
           />
           <input
@@ -161,47 +159,52 @@ const ManageUsers = ({ onBack }) => {
             value={formState.email}
             onChange={handleChange}
             placeholder="Email"
-            className="border border-blue-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
             required
           />
-          <div className="md:col-span-3 flex flex-col md:flex-row gap-4 items-center mt-2">
-            {errorMessage && (
-              <p className="text-red-500 text-sm flex-1">{errorMessage}</p>
-            )}
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition w-full md:w-auto"
-            >
-              Add User
-            </button>
-          </div>
         </form>
+        <div className="flex flex-col md:flex-row gap-4 items-end mt-4">
+          {errorMessage && (
+            <p className="text-red-500 text-sm flex-1">{errorMessage}</p>
+          )}
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg font-semibold shadow transition w-full md:w-auto text-base"
+            onClick={handleAddUser}
+          >
+            Add User
+          </button>
+        </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold mb-6 text-blue-700 flex items-center gap-2">
-          <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-base">
-            Manage Users
-          </span>
+      {/* Manage Users Card */}
+      <div className="w-full max-w-7xl bg-white rounded-lg shadow-lg p-4 md:p-8 border border-blue-100">
+        <h2 className="text-2xl md:text-3xl font-bold text-blue-700 mb-2 text-left sticky top-0 z-10 bg-white">
+          Manage Employees
         </h2>
+        <p className="text-gray-500 mb-6 text-sm">
+          Search, edit, or remove employees from your organization.
+        </p>
         <input
           type="text"
           placeholder="Search by name or email"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-blue-300 p-3 rounded-lg w-full mb-6 focus:ring-2 focus:ring-blue-400"
+          className="mb-6 border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
         />
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg shadow">
+
+        {/* Table for md+ screens */}
+        <div className="hidden md:block overflow-x-auto rounded-lg border border-gray-100">
+          <table className="min-w-full bg-white rounded-lg text-base">
             <thead>
-              <tr>
-                <th className="py-3 px-4 text-left text-blue-700 font-semibold">
+              <tr className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                <th className="py-3 px-4 text-left font-semibold text-base">
                   Name
                 </th>
-                <th className="py-3 px-4 text-left text-blue-700 font-semibold">
+                <th className="py-3 px-4 text-left font-semibold text-base">
                   Email
                 </th>
-                <th className="py-3 px-4 text-left text-blue-700 font-semibold">
+                <th className="py-3 px-4 text-left font-semibold text-base">
                   Actions
                 </th>
               </tr>
@@ -219,22 +222,26 @@ const ManageUsers = ({ onBack }) => {
                     key={user._id || user.id}
                     className="border-b hover:bg-blue-50 transition"
                   >
-                    <td className="py-3 px-4 font-medium text-gray-800">
+                    <td className="py-3 px-4 font-medium text-gray-800 text-base">
                       {user.firstName} {user.lastName}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">{user.email}</td>
+                    <td className="py-3 px-4 text-gray-500 text-base">
+                      {user.email}
+                    </td>
                     <td className="py-3 px-4">
                       <button
                         onClick={() => handleEdit(user)}
-                        className="text-blue-600 hover:underline font-semibold mr-4"
+                        className="text-blue-600 hover:bg-blue-100 rounded-full p-2 transition mr-2"
+                        title="Edit"
                       >
-                        Edit
+                        <FiEdit2 size={18} />
                       </button>
                       <button
                         onClick={() => handleDeleteClick(user._id || user.id)}
-                        className="text-red-600 hover:underline font-semibold"
+                        className="text-red-600 hover:bg-red-50 rounded-full p-2 transition"
+                        title="Delete"
                       >
-                        Delete
+                        <MdDeleteOutline size={20} />
                       </button>
                     </td>
                   </tr>
@@ -242,6 +249,45 @@ const ManageUsers = ({ onBack }) => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Card/List UI */}
+        <div className="md:hidden space-y-4">
+          {filteredUsers.length === 0 ? (
+            <div className="text-center text-gray-400 py-6 text-base">
+              No users found.
+            </div>
+          ) : (
+            filteredUsers.map((user) => (
+              <div
+                key={user._id || user.id}
+                className="bg-gray-50 shadow border border-blue-100 rounded-lg p-4"
+              >
+                <h3 className="text-lg font-semibold text-blue-800 mb-1">
+                  {user.firstName} {user.lastName}
+                </h3>
+                <p className="text-gray-600 mb-3 break-all text-sm">
+                  <span className="font-medium">Email:</span> {user.email}
+                </p>
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="text-blue-600 hover:bg-blue-100 rounded-full p-2 transition"
+                    title="Edit"
+                  >
+                    <FiEdit2 size={18} />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(user._id || user.id)}
+                    className="text-red-600 hover:bg-red-50 rounded-full p-2 transition"
+                    title="Delete"
+                  >
+                    <MdDeleteOutline size={20} />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -261,7 +307,7 @@ const ManageUsers = ({ onBack }) => {
             value={formState.firstName}
             onChange={handleChange}
             placeholder="First Name"
-            className="border border-blue-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
             required
           />
           <input
@@ -270,7 +316,7 @@ const ManageUsers = ({ onBack }) => {
             value={formState.lastName}
             onChange={handleChange}
             placeholder="Last Name"
-            className="border border-blue-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
             required
           />
           <input
@@ -279,20 +325,20 @@ const ManageUsers = ({ onBack }) => {
             value={formState.email}
             onChange={handleChange}
             placeholder="Email"
-            className="border border-blue-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="border border-blue-200 bg-blue-50 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 transition text-base"
             required
           />
           <div className="flex justify-end space-x-2">
             <button
               type="submit"
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-base"
             >
               Update
             </button>
             <button
               type="button"
               onClick={resetForm}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 text-base"
             >
               Cancel
             </button>
@@ -307,6 +353,16 @@ const ManageUsers = ({ onBack }) => {
         onConfirm={handleConfirmDelete}
         message="Are you sure you want to delete this user?"
       />
+
+      {/* Back Button */}
+      <div className="w-full max-w-6xl flex justify-end mt-10">
+        <button
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition text-base"
+          onClick={onBack}
+        >
+          Back
+        </button>
+      </div>
     </div>
   );
 };

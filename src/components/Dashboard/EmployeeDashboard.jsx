@@ -12,7 +12,7 @@ const EmployeeDashboard = ({ changeUser, data, onTaskUpdated = () => {} }) => {
 
   const [tasks, setTasks] = useState([]);
   const [taskCounts, setTaskCounts] = useState({
-    newTask: 0,
+    new: 0,
     active: 0,
     completed: 0,
     failed: 0,
@@ -34,7 +34,7 @@ const EmployeeDashboard = ({ changeUser, data, onTaskUpdated = () => {} }) => {
           acc[task.status] = (acc[task.status] || 0) + 1;
           return acc;
         },
-        { newTask: 0, active: 0, completed: 0, failed: 0 }
+        { new: 0, active: 0, completed: 0, failed: 0 }
       );
       setTaskCounts(counts);
     } catch (error) {
@@ -56,7 +56,7 @@ const EmployeeDashboard = ({ changeUser, data, onTaskUpdated = () => {} }) => {
         loadEmployeeData();
         addNotification({
           title: "New Task Assigned",
-          message: `Task "${payload.task.title}" has been assigned to you.`,
+          message: `Task "${payload.task.heading}" has been assigned to you.`,
           time: Date.now(),
         });
       }

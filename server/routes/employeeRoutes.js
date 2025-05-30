@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
       email,
       password,
       taskCounts: taskCounts || {
-        newTask: 0,
+        new: 0,
         active: 0,
         completed: 0,
         failed: 0,
@@ -64,6 +64,16 @@ router.post("/", async (req, res) => {
       .json({ error: "Failed to create employee", details: err.message });
   }
 });
+// POST /api/employees/login
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const employee = await Employee.findOne({ email });
+  if (!employee || employee.password !== password) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+  res.json(employee);
+});
+
 // PUT /api/employees/:id
 router.put("/:id", async (req, res) => {
   try {

@@ -65,7 +65,7 @@ const NotificationBell = () => {
               >
                 <div>
                   <div className="font-medium">
-                    {notif.title || "Notification"}
+                    {notif.heading || "Notification"}
                   </div>
                   <div className="text-sm text-gray-600">{notif.message}</div>
                   <div className="text-xs text-gray-400 mt-1">

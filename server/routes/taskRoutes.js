@@ -10,31 +10,26 @@ const router = express.Router();
 console.log("Assign Task API called");
 router.post("/assign", async (req, res) => {
   try {
-    const { title, description, assignedTo, dueDate, category } = req.body;
+    console.log(req.body);
+    const { heading, description, assignedTo, dueDate, category } = req.body;
 
-    if (!title || !description || !assignedTo || !dueDate || !category) {
+    if (!heading || !description || !assignedTo || !dueDate || !category) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    if (!mongoose.isValidObjectId(assignedTo)) {
-      return res
-        .status(400)
-        .json({ error: "Invalid or missing assignedTo user ID" });
-    }
-
     const task = await Task.create({
-      title,
+      heading,
       description,
       assignedTo: new mongoose.Types.ObjectId(assignedTo),
       dueDate,
       category,
-      status: "newTask",
+      status: "new",
     });
 
     // Increment the "newTask" count for the assigned employee
     await Employee.findByIdAndUpdate(
       assignedTo,
-      { $inc: { "taskCounts.newTask": 1 }, $push: { tasks: task._id } },
+      { $inc: { "taskCounts.new": 1 }, $push: { tasks: task._id } },
       { new: true }
     );
 
@@ -100,11 +95,11 @@ router.put("/:id/status", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, dueDate, category } = req.body;
+    const { heading, description, dueDate, category } = req.body;
 
     const updatedTask = await Task.findByIdAndUpdate(
       id,
-      { title, description, dueDate, category },
+      { heading, description, dueDate, category },
       { new: true }
     );
 
@@ -177,9 +172,9 @@ router.post("/:id/remind", async (req, res) => {
     if (io) {
       io.to(task.assignedTo._id.toString()).emit("taskReminder", {
         taskId: task._id,
-        title: task.title,
+        heading: task.heading,
         dueDate: task.dueDate,
-        message: `Reminder: Task "${task.title}" is due on ${new Date(
+        message: `Reminder: Task "${task.heading}" is due on ${new Date(
           task.dueDate
         ).toLocaleDateString()}`,
       });

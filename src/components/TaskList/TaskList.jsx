@@ -7,14 +7,10 @@ import FailedTask from "./FailedTask";
 const TaskList = ({ tasks, selectedFilter, updateTaskStatus = () => {} }) => {
   // Map filter keys to status values
   const statusMap = {
-    new: "NewTask",
+    new: "new",
     active: "active",
     completed: "completed",
     failed: "failed",
-    "New Tasks": "newTask",
-    Accepted: "active",
-    Completed: "completed",
-    Failed: "failed",
     All: "all",
   };
 
@@ -40,7 +36,7 @@ const TaskList = ({ tasks, selectedFilter, updateTaskStatus = () => {} }) => {
       <h2 className="text-2xl font-bold text-gray-700 mb-6">
         {selectedFilter === "All" ? "All Tasks" : selectedFilter + " Tasks"}
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {sortedTasks.length === 0 ? (
           <div className="col-span-full text-center text-gray-400 py-8">
             No tasks found.
@@ -55,7 +51,7 @@ const TaskList = ({ tasks, selectedFilter, updateTaskStatus = () => {} }) => {
                   updateTaskStatus={updateTaskStatus}
                 />
               );
-            if (task.status === "newTask")
+            if (task.status === "new")
               return (
                 <NewTask
                   key={task._id}

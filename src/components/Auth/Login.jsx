@@ -1,35 +1,45 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthProvider";
+import React, { useState } from "react";
+import axios from "axios";
 
-const Login = ({ handleLogin = () => {}, setIsAdmin, isAdmin }) => {
+const Login = () => {
+  const [isAdminLogin, setIsAdminLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData] = useContext(AuthContext); // Access employee data from AuthContext
-  const [isAdminLogin, setIsAdminLogin] = useState(true); // Toggle between Admin and Employee login
+  const [error, setError] = useState("");
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-
+    setError("");
     if (isAdminLogin) {
-      // Admin login
-      if (email === "admin@me.com" && password === "123") {
-        handleLogin("admin", { firstName: "Admin" }); // <-- Pass admin name here
-      } else {
-        alert("Invalid Admin Credentials.");
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/admin/login`,
+          { email, password }
+        );
+        localStorage.setItem("loggedInUserData", JSON.stringify(res.data));
+        localStorage.setItem("userRole", "admin"); // <-- ADD THIS LINE
+        window.location.href = "/dashboard/admin";
+      } catch (err) {
+        setError("Invalid Admin Credentials.");
+        if (err.response) {
+          console.log("Backend response:", err.response.data);
+        } else {
+          console.log("Login error:", err);
+        }
       }
     } else {
-      // Employee login
-      const employee = userData.find(
-        (user) => user.email === email && user.password === password
-      );
-
-      if (employee) {
-        handleLogin("employee", employee); // Pass employee data to App
-      } else {
-        alert("Invalid Employee Credentials.");
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/employees/login`,
+          { email, password }
+        );
+        localStorage.setItem("loggedInUserData", JSON.stringify(res.data));
+        localStorage.setItem("userRole", "employee"); // <-- ADD THIS LINE
+        window.location.href = "/dashboard/employee";
+      } catch (err) {
+        setError("Invalid Employee Credentials.");
       }
     }
-
     setEmail("");
     setPassword("");
   };
@@ -105,6 +115,7 @@ const Login = ({ handleLogin = () => {}, setIsAdmin, isAdmin }) => {
           >
             Log In
           </button>
+          {error && <div className="text-red-600 text-center">{error}</div>}
         </form>
       </div>
     </div>
