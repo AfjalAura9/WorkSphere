@@ -1,6 +1,6 @@
 # 🧠 WorkSphere
 
-WorkSphere is a smart task management and employee collaboration platform built to simplify workflows, improve productivity, and promote teamwork. It offers role-based access for admins and employees, enabling seamless task assignment, tracking, and management in real time.
+WorkSphere is a smart task management and employee collaboration platform designed to simplify workflows, enhance productivity, and foster teamwork. It offers real-time updates, role-based permissions, and intuitive dashboards, it empowers admins and employees to stay in sync effortlessly.
 
 ---
 
@@ -17,14 +17,13 @@ WorkSphere is a smart task management and employee collaboration platform built 
 - 📌 **Task Dashboard** – View assigned tasks, due dates, and current status.
 - 🔄 **Update Progress** – Change task status like *In Progress*, *Completed*, etc.
 - 🔔 **Stay Informed** – Receive notifications about task updates and reminders.
-- 🧾 **Profile Page** – Check personal task history and performance overview.
 
 ### 🌐 General Features
 - 🛡️ **Role-Based Access Control (RBAC)** – Secure login for admin and employee roles.
 - 📱 **Responsive UI** – Works smoothly across mobile, tablet, and desktop.
 - ⚡ **Real-Time Sync** – Powered by Socket.IO for instant updates.
 - 🔍 **Search & Filter** – Easily locate tasks or employees.
-- 🌙 **Dark Mode** – User-friendly interface with light/dark theme toggle.
+- 🧾 **Profile Page** – Profile pages for both Admin and Employee Dashboards.
 
 ---
 
@@ -32,38 +31,49 @@ WorkSphere is a smart task management and employee collaboration platform built 
 
 ### 🎨 Frontend
 - **React.js** – Modular UI development.
-- **Tailwind CSS** – Clean and responsive styling.
+- **Tailwind CSS** – Clean and responsive styling.  
 - **Axios** – For API communication.
+- **React Quill** – Rich-text editor for creating detailed task descriptions.
+- **Context API** – Manage global state across components.
+- **React Router** – Routing between pages and dashboards.
 
 ### ⚙️ Backend
-- **Node.js** – Server-side JavaScript.
-- **Express.js** – Fast and lightweight API framework.
-- **Socket.IO** – Real-time communication.
+- **Node.js** – Server-side JavaScript  
+- **Express.js** – Fast and lightweight API framework  
+- **Socket.IO** – Real-time communication  
 
 ### 💾 Database
-- **MongoDB** – Flexible NoSQL database.
+- **MongoDB** – Flexible NoSQL database  
+- **Mongoose** – ODM for Node.js, simplifies data operations  
 
 ### 🧰 Dev Tools
-- **Mongoose** – MongoDB ODM for Node.js.
-- **Dotenv** – Environment variable management.
-- **Postman** – API testing and debugging.
+- **Dotenv** – Environment variable management  
+- **Postman** – API testing and debugging  
+- **Nodemon** – Automatically restarts Node app on file changes  
+- **ESLint** – JavaScript/React linting  
+- **Cypress** – End-to-end testing 
+- **Git & GitHub** – Version control and repository hosting  
+- **Chrome Dev Tools** – Browser-based debugging
+
+### 🚀 Deployment
+- **Vercel & Render** – Deployed Frontend using Vercel and Backend using Render.  
 
 ---
 
 ## 🚀 Getting Started
-
-### ✅ Prerequisites
-- Install **Node.js** and **MongoDB** (locally or use MongoDB Atlas).
-- Git should be installed for cloning the repository.
-
 ### 🧱 Clone the Repository
 ```bash
 git clone https://github.com/AfjalAura9/worksphere.git
 cd worksphere
-
+```
 
 ## 🛠 Installation and Setup
 ### ✅ Install Dependencies
+
+**For the frontend:**
+```bash
+npm install
+```
 
 **For the backend:**
 ```bash
@@ -71,11 +81,7 @@ cd server
 npm install
 ```
 
-**For the frontend:**
-```bash
-cd client
-npm install
-```
+
 
 ### ⚙️ Set Up Environment Variables
 
@@ -85,26 +91,23 @@ PORT=5000
 MONGO_URI=your_mongo_db_connection_string
 ```
 
+### ▶️ Run the Frontend
+```bash
+npm run dev
+```
+
 ### ▶️ Run the Backend
 ```bash
 cd server
-npm run dev
-```
-
-### ▶️ Run the Frontend
-```bash
-cd client
-npm run dev
+npm start
 ```
 
 ### 🌐 Access the Application
-
 Open your browser and navigate to: [http://localhost:5173](http://localhost:5173)
 
 ---
 
 ## 📁 Folder Structure
-
 ```
 worksphere/
 ├── client/           # React Frontend
@@ -173,7 +176,6 @@ worksphere/
 │   ├── .env
 │   ├── server.js
 │   └── package.json
-
 ```
 
 ## 🔌 API Endpoints
@@ -201,11 +203,20 @@ worksphere/
 
 ## 📸 Screenshots
 
-### Admin Dashboard
-![Admin Dashboard](https://via.placeholder.com/800x400?text=Admin+Dashboard)
+### Login Page
+![Login Page](./Screenshots/Admin/LoginPage.png)
 
-### Employee Dashboard
-![Employee Dashboard](https://via.placeholder.com/800x400?text=Employee+Dashboard)
+### Admin Dashboard
+![Admin Dashboard](./Screenshots/Admin/AdminDashboard.png)
+
+### Assigned Task Page
+![Assigned Task Page](./Screenshots/Admin/AssignedTasks.png)
+
+### Manage Employee Page
+![Manage Employee Page](./Screenshots/Admin/ManageEmployeePage.png)
+
+### Individual Profile Page
+![Individual Profile Page](./Screenshots/Admin/IndividualProfilePage.png)
 
 ---
 
